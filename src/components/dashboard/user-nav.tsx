@@ -13,43 +13,40 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useAuth, useUser } from "@/firebase";
+import { useUser } from "@/firebase";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { useRouter } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
 
 export function UserNav() {
-  const { user } = useUser();
-  const auth = useAuth();
+  const { user } = useUser(); // Still useful for getting display info if a real session exists
   const router = useRouter();
 
   const handleLogout = async () => {
-    try {
-      await auth.signOut();
-      router.push('/');
-      toast({
-        title: "Logged Out",
-        description: "You have been successfully logged out.",
-      });
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Logout Failed",
-        description: "Could not log you out. Please try again.",
-      });
-    }
+    // For fictional accounts, we just redirect to the home page.
+    // When you re-enable Firebase, you'll add the signOut call back here.
+    router.push('/');
+    toast({
+      title: "Logged Out",
+      description: "You have been successfully logged out.",
+    });
   };
   
   const userAvatar = PlaceHolderImages.find(img => img.id === 'user-avatar-small');
 
   const getInitials = (name?: string | null) => {
-    if (!name) return "?";
+    if (!name) return "G"; // Guest
     const names = name.split(' ');
     if (names.length > 1) {
       return `${names[0][0]}${names[names.length - 1][0]}`.toUpperCase();
     }
     return names[0].substring(0, 2).toUpperCase();
   }
+
+  // Determine display information, defaulting to a fictional user
+  const displayName = user?.displayName || "Fictional User";
+  const email = user?.email || "user@example.com";
+  const isAnonymous = user?.isAnonymous ?? false;
 
   return (
     <DropdownMenu>
@@ -62,23 +59,17 @@ export function UserNav() {
             {userAvatar && (
                 <AvatarImage src={userAvatar.imageUrl} data-ai-hint={userAvatar.imageHint} alt="User" />
             )}
-            <AvatarFallback>{getInitials(user?.displayName)}</AvatarFallback>
+            <AvatarFallback>{getInitials(displayName)}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            {user?.isAnonymous ? (
-              <p className="text-sm font-medium leading-none">Guest User</p>
-            ) : (
-              <>
-                <p className="text-sm font-medium leading-none">{user?.displayName || "User"}</p>
-                <p className="text-xs leading-none text-muted-foreground">
-                  {user?.email}
-                </p>
-              </>
-            )}
+             <p className="text-sm font-medium leading-none">{displayName}</p>
+             <p className="text-xs leading-none text-muted-foreground">
+               {email}
+             </p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
@@ -95,7 +86,7 @@ export function UserNav() {
                 <span>Settings</span>
               </DropdownMenuItem>
             </Link>
-             {user?.isAnonymous && (
+             {isAnonymous && (
               <DropdownMenuItem disabled>
                 <ShieldQuestion className="mr-2" />
                 <span>Anonymous Mode</span>

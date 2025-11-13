@@ -8,11 +8,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from '@/hooks/use-toast';
-import { useAuth, useUser, initiateEmailSignIn, initiateEmailSignUp, initiateAnonymousSignIn } from '@/firebase';
+import { useUser } from '@/firebase';
 
 export default function Home() {
   const router = useRouter();
-  const auth = useAuth();
   const { user, isUserLoading } = useUser();
   const { toast } = useToast();
 
@@ -21,6 +20,7 @@ export default function Home() {
   const [isAuthActionLoading, setIsAuthActionLoading] = useState(false);
 
   useEffect(() => {
+    // This will now only redirect if a real user session exists (e.g., from a previous login)
     if (!isUserLoading && user) {
       router.replace('/dashboard');
     }
@@ -29,39 +29,41 @@ export default function Home() {
   const handleAuthAction = async (action: 'login' | 'signup' | 'anonymous') => {
     setIsAuthActionLoading(true);
 
-    // Add a small delay to give Firebase time to create/log in the user
-    // and for the onAuthStateChanged listener to fire.
-    const redirectWithDelay = () => {
-      setTimeout(() => {
-        router.push('/dashboard');
-        toast({
-          title: "Welcome!",
-          description: "You've been successfully signed in.",
-        });
-      }, 1000); 
-    };
-
     try {
       if (action === 'anonymous') {
-        initiateAnonymousSignIn(auth);
-        redirectWithDelay();
+        // Mock anonymous login
+        setTimeout(() => {
+           toast({
+            title: "Continuing as Guest",
+            description: "You are browsing as a guest.",
+          });
+          router.push('/dashboard');
+        }, 500);
         return;
       }
-
+      
       if (!email || !password) {
         throw new Error('Please enter both email and password.');
       }
       
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        throw new Error('Please enter a valid email address.');
+      }
+
       if (password.length < 6) {
         throw new Error('Password must be at least 6 characters long.');
       }
 
-      if (action === 'login') {
-        initiateEmailSignIn(auth, email, password);
-      } else {
-        initiateEmailSignUp(auth, email, password);
-      }
-      redirectWithDelay();
+      // Simulate a successful auth action
+      setTimeout(() => {
+        const title = action === 'login' ? "Login Successful" : "Sign Up Successful";
+        toast({
+          title: title,
+          description: "Welcome! You've been successfully signed in.",
+        });
+        router.push('/dashboard');
+      }, 1000);
 
     } catch (error: any) {
       toast({
@@ -69,7 +71,7 @@ export default function Home() {
         title: "Authentication Failed",
         description: error.message || "An unexpected error occurred. Please try again.",
       });
-       setIsAuthActionLoading(false);
+      setIsAuthActionLoading(false);
     }
   };
 
@@ -92,7 +94,7 @@ export default function Home() {
 
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle>Welcome Back</CardTitle>
+          <CardTitle>Welcome</CardTitle>
           <CardDescription>Enter your credentials to access your dashboard.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
