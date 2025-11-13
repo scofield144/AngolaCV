@@ -1,7 +1,7 @@
 'use server';
 
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
-import { getSdks } from '@/firebase';
+import { initializeFirebase } from '@/firebase';
 
 export async function saveCoverLetter(
   userId: string,
@@ -14,7 +14,7 @@ export async function saveCoverLetter(
 
   try {
     // We cannot use the useFirestore() hook in server actions, so we initialize manually.
-    const { firestore } = getSdks();
+    const { firestore } = initializeFirebase();
     const coverLettersRef = collection(firestore, 'users', userId, 'coverLetters');
 
     await addDoc(coverLettersRef, {
