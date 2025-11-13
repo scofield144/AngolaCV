@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Building2, Loader2, Mail, Lock } from 'lucide-react';
+import { Building2, Loader2, Mail, Lock, User } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -22,8 +22,8 @@ export default function LoginPage() {
   const { user, isUserLoading } = useUser();
   const { toast } = useToast();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('test@loneus.com');
+  const [password, setPassword] = useState('password');
   const [isAuthActionLoading, setIsAuthActionLoading] = useState(false);
 
   useEffect(() => {
@@ -55,8 +55,8 @@ export default function LoginPage() {
         throw new Error('Please enter a valid email address.');
       }
 
-      if (password.length < 6) {
-        throw new Error('Password must be at least 6 characters long.');
+      if (password.length < 4) {
+        throw new Error('Password must be at least 4 characters long.');
       }
 
       if (action === 'login') {
@@ -121,9 +121,23 @@ export default function LoginPage() {
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle>Welcome</CardTitle>
-          <CardDescription>Enter your credentials to access your dashboard.</CardDescription>
+          <CardDescription>Get instant access for testing purposes or log in with your account.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
+           <Button className="w-full" onClick={() => handleAuthAction('anonymous')} disabled={isAuthActionLoading}>
+                {isAuthActionLoading ? <Loader2 className="animate-spin" /> : <User className="mr-2" />}
+                Continue as Guest (Easy Access)
+            </Button>
+            <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-card px-2 text-muted-foreground">
+                        Or with an account
+                    </span>
+                </div>
+            </div>
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <div className="relative">
@@ -166,19 +180,6 @@ export default function LoginPage() {
               Sign Up
             </Button>
           </div>
-           <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t" />
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-background px-2 text-muted-foreground">
-                    Or continue with
-                    </span>
-                </div>
-            </div>
-          <Button variant="outline" className="w-full" onClick={() => handleAuthAction('anonymous')} disabled={isAuthActionLoading}>
-            Continue as Guest
-          </Button>
         </CardContent>
       </Card>
     </main>
