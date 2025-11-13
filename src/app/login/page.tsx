@@ -52,7 +52,7 @@ export default function LoginPage() {
 
   const createUserProfile = (firebaseUser: FirebaseUser, role: 'personal' | 'recruiter') => {
     if (!firestore) return;
-    const userProfileRef = doc(firestore, 'users', firebaseUser.uid, 'profile');
+    const userProfileRef = doc(firestore, 'users', firebaseUser.uid);
     const profileData = {
       id: firebaseUser.uid,
       email: firebaseUser.email,

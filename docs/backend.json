@@ -276,7 +276,7 @@
   "firestore": {
     "structure": [
       {
-        "path": "/users/{userId}/profile",
+        "path": "/users/{userId}",
         "definition": {
           "entityName": "UserProfile",
           "schema": {
@@ -380,6 +380,7 @@
         }
       }
     ],
-    "reasoning": "The Firestore structure is designed to support the AngolaCV Pro application, focusing on user profiles, CVs, cover letters, and related templates and skills. A core principle is Authorization Independence achieved through path-based ownership for user-specific data and denormalization where needed. \n\nThe `/users/{userId}/profile` collection stores user profile data.  CVs and Cover Letters are stored as subcollections under each user's profile (`/users/{userId}/cvs` and `/users/{userId}/coverLetters`), reinforcing path-based ownership and simplifying security rules. Each document in these subcollections implicitly belongs to the user identified by `{userId}`.\n\nCV and CoverLetter templates are stored in global collections (`/cvTemplates` and `/coverLetterTemplates`), as these are generally read-only and shared across all users.\n\nSkills are also stored in a global collection `/skills`, allowing efficient management and reuse of skills across multiple CVs. The relationship between CVs and Skills is managed through the `skills` array inside the CV document which contains the ids of skills. This avoids the creation of a separate join collection and simplifies data retrieval and security rules.\n\nThis structure supports QAPs (Rules are not Filters) by segregating user-specific data into path-based ownership, enabling secure list operations within a user's profile. Global collections such as `/cvTemplates`, `/coverLetterTemplates`, and `/skills` have simpler read rules, as they do not require user-specific authorization checks."
+    "reasoning": "The Firestore structure is designed to support the AngolaCV Pro application, focusing on user profiles, CVs, cover letters, and related templates and skills. A core principle is Authorization Independence achieved through path-based ownership for user-specific data and denormalization where needed. \n\nThe `/users/{userId}` collection stores user profile data.  CVs and Cover Letters are stored as subcollections under each user's document (`/users/{userId}/cvs` and `/users/{userId}/coverLetters`), reinforcing path-based ownership and simplifying security rules. Each document in these subcollections implicitly belongs to the user identified by `{userId}`.\n\nCV and CoverLetter templates are stored in global collections (`/cvTemplates` and `/coverLetterTemplates`), as these are generally read-only and shared across all users.\n\nSkills are also stored in a global collection `/skills`, allowing efficient management and reuse of skills across multiple CVs. The relationship between CVs and Skills is managed through the `skills` array inside the CV document which contains the ids of skills. This avoids the creation of a separate join collection and simplifies data retrieval and security rules.\n\nThis structure supports QAPs (Rules are not Filters) by segregating user-specific data into path-based ownership, enabling secure list operations within a user's profile. Global collections such as `/cvTemplates`, `/coverLetterTemplates`, and `/skills` have simpler read rules, as they do not require user-specific authorization checks."
   }
 }
+    

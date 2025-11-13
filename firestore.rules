@@ -7,7 +7,7 @@
  * Skills are publically accessible.
  *
  * Data Structure:
- * - /users/{userId}/profile: User profile information.
+ * - /users/{userId}: User profile information.
  * - /users/{userId}/cvs/{cvId}: CVs created by the user.
  * - /users/{userId}/coverLetters/{coverLetterId}: Cover letters created by the user.
  * - /cvTemplates/{cvTemplateId}: CV templates available in the application.
@@ -36,7 +36,7 @@ service cloud.firestore {
 
     /**
      * @description Enforces user-ownership for profile documents.
-     * @path /users/{userId}/profile
+     * @path /users/{userId}
      * @allow (create) User 'user123' can create a profile with matching userId.
      * @allow (get) User 'user123' can read their own profile.
      * @allow (update) User 'user123' can update their own profile.
@@ -45,7 +45,7 @@ service cloud.firestore {
      * @deny (get) User 'user456' cannot read 'user123's profile.
      * @principle Enforces document ownership for all operations.
      */
-    match /users/{userId}/profile {
+    match /users/{userId} {
       allow get: if isOwner(userId);
       allow list: if false;
       allow create: if isOwner(userId) && request.resource.data.role in ['personal', 'recruiter'];
