@@ -147,7 +147,7 @@ export default function CandidateSearchPage() {
         </CardContent>
         <CardFooter>
             <Button onClick={handleSearch}>
-              <Search className="mr-2" />
+              <Search className="mr-2 h-4 w-4" />
               Search
             </Button>
         </CardFooter>
@@ -180,10 +180,10 @@ export default function CandidateSearchPage() {
               </CardContent>
               <CardFooter className="gap-2">
                 <Button asChild size="sm" className="flex-1">
-                    <Link href="#">View Profile <ArrowUpRight className="ml-2" /></Link>
+                    <Link href="#">View Profile <ArrowUpRight className="ml-2 h-4 w-4" /></Link>
                 </Button>
                  <Button asChild variant="outline" size="sm" className="flex-1">
-                    <Link href="#">Message <MessageSquare className="ml-2" /></Link>
+                    <Link href="#">Message <MessageSquare className="ml-2 h-4 w-4" /></Link>
                 </Button>
               </CardFooter>
             </Card>
