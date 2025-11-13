@@ -1,5 +1,3 @@
-
-
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -73,9 +71,9 @@ const defaultValues: Partial<ProfileFormValues> = {
   portfolio: '',
   summary: "A highly motivated Software Engineer with 5+ years of experience in developing and deploying scalable web applications. Proficient in modern JavaScript frameworks and cloud technologies. Passionate about building solutions for the Angolan market.",
   skills: "React, Node.js, PostgreSQL, DevOps, TypeScript, English, Portuguese",
-  languages: "- Portuguese (Native)\n- English (Fluent)",
+  languages: "- Portuguese (Native)\\n- English (Fluent)",
   experiences: [
-    { jobTitle: "Senior Developer", company: "Tech Solutions LDA", location: "Luanda", startDate: "2020-01-01", endDate: "Present", description: "- Led the development of a new e-commerce platform, resulting in a 30% increase in sales.\n- Mentored junior developers and conducted code reviews."}
+    { jobTitle: "Senior Developer", company: "Tech Solutions LDA", location: "Luanda", startDate: "2020-01-01", endDate: "Present", description: "- Led the development of a new e-commerce platform, resulting in a 30% increase in sales.\\n- Mentored junior developers and conducted code reviews."}
   ],
   educations: [
       { degree: "Bachelor of Science in Computer Science", institution: "Universidade Agostinho Neto", startDate: "2015-09-01", endDate: "2019-07-01" }
@@ -204,7 +202,7 @@ export default function MyProfilePage() {
                     <CardContent className="grid gap-6 md:grid-cols-2">
                         <FormField name="linkedin" control={form.control} render={({ field }) => ( <FormItem><FormLabel>LinkedIn Profile</FormLabel><FormControl><Input placeholder="https://linkedin.com/in/..." {...field} /></FormControl><FormMessage /></FormItem> )} />
                         <FormField name="github" control={form.control} render={({ field }) => ( <FormItem><FormLabel>GitHub Profile</FormLabel><FormControl><Input placeholder="https://github.com/..." {...field} /></FormControl><FormMessage /></FormItem> )} />
-                        <FormField name="portfolio" control={form.control} render={({ field }) => ( <FormItem><FormLabel>Portfolio/Website</FormLabel><FormControl><Input placeholder="https://..." {...field} /></FormControl><FormMessage /></FormMessage /></FormItem> )} />
+                        <FormField name="portfolio" control={form.control} render={({ field }) => ( <FormItem><FormLabel>Portfolio/Website</FormLabel><FormControl><Input placeholder="https://..." {...field} /></FormControl><FormMessage /></FormItem> )} />
                     </CardContent>
                 </Card>
             </>
