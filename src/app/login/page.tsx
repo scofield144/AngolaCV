@@ -9,18 +9,22 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from '@/hooks/use-toast';
-import { useUser, useAuth } from '@/firebase';
+import { useUser, useAuth, useFirestore } from '@/firebase';
 import { 
   createUserWithEmailAndPassword, 
   signInWithEmailAndPassword,
-  signInAnonymously
+  signInAnonymously,
+  type User as FirebaseUser
 } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
 import Link from 'next/link';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { setDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 
 export default function LoginPage() {
   const router = useRouter();
   const auth = useAuth();
+  const firestore = useFirestore();
   const { user, isUserLoading } = useUser();
   const { toast } = useToast();
 
@@ -45,6 +49,20 @@ export default function LoginPage() {
       router.replace('/dashboard');
     }
   }, [user, isUserLoading, router]);
+
+  const createUserProfile = (firebaseUser: FirebaseUser, role: 'personal' | 'recruiter') => {
+    if (!firestore) return;
+    const userProfileRef = doc(firestore, 'users', firebaseUser.uid, 'profile');
+    const profileData = {
+      id: firebaseUser.uid,
+      email: firebaseUser.email,
+      role: role,
+      firstName: '',
+      lastName: '',
+    };
+    // Non-blocking write
+    setDocumentNonBlocking(userProfileRef, profileData, { merge: true });
+  };
 
   const handleAuthAction = async (action: 'login' | 'signup' | 'anonymous') => {
     setIsAuthActionLoading(true);
@@ -76,7 +94,9 @@ export default function LoginPage() {
       if (action === 'login') {
         await signInWithEmailAndPassword(auth, email, password);
       } else {
-        await createUserWithEmailAndPassword(auth, email, password);
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const role = activeTab === 'personal' ? 'personal' : 'recruiter';
+        createUserProfile(userCredential.user, role);
       }
       
       const title = action === 'login' ? "Login Successful" : "Sign Up Successful";
@@ -112,6 +132,7 @@ export default function LoginPage() {
         title: "Authentication Failed",
         description: description,
       });
+    } finally {
       setIsAuthActionLoading(false);
     }
   };
@@ -161,11 +182,11 @@ export default function LoginPage() {
         </div>
         <div className="grid grid-cols-2 gap-2">
             <Button onClick={() => handleAuthAction('login')} disabled={isAuthActionLoading || !email || !password}>
-            {isAuthActionLoading && <Loader2 className="animate-spin" />}
+            {isAuthActionLoading && <Loader2 className="animate-spin mr-2" />}
             Login
             </Button>
             <Button variant="secondary" onClick={() => handleAuthAction('signup')} disabled={isAuthActionLoading || !email || !password}>
-            {isAuthActionLoading && <Loader2 className="animate-spin" />}
+            {isAuthActionLoading && <Loader2 className="animate-spin mr-2" />}
             Sign Up
             </Button>
         </div>
@@ -181,7 +202,7 @@ export default function LoginPage() {
 
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle>Welcome Back</CardTitle>
+          <CardTitle>Welcome</CardTitle>
           <CardDescription>Select your account type to continue.</CardDescription>
         </CardHeader>
         <CardContent>

@@ -48,7 +48,7 @@ service cloud.firestore {
     match /users/{userId}/profile {
       allow get: if isOwner(userId);
       allow list: if false;
-      allow create: if isOwner(userId);
+      allow create: if isOwner(userId) && request.resource.data.role in ['personal', 'recruiter'];
       allow update: if isOwner(userId);
       allow delete: if isOwner(userId);
     }
@@ -66,7 +66,7 @@ service cloud.firestore {
      */
     match /users/{userId}/cvs/{cvId} {
       allow get: if isOwner(userId);
-      allow list: if false;
+      allow list: if isOwner(userId);
       allow create: if isOwner(userId);
       allow update: if isOwner(userId);
       allow delete: if isOwner(userId);
@@ -85,7 +85,7 @@ service cloud.firestore {
      */
     match /users/{userId}/coverLetters/{coverLetterId} {
       allow get: if isOwner(userId);
-      allow list: if false;
+      allow list: if isOwner(userId);
       allow create: if isOwner(userId);
       allow update: if isOwner(userId);
       allow delete: if isOwner(userId);
