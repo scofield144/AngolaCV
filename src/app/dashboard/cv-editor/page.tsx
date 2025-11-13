@@ -7,7 +7,8 @@ import * as z from "zod";
 import { useState } from "react";
 import { doc } from 'firebase/firestore';
 
-import { useUser, useFirestore, setDocumentNonBlocking } from "@/firebase";
+import { useUser, useFirestore } from "@/firebase";
+import { setDocumentNonBlocking } from "@/firebase/non-blocking-updates";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -148,6 +149,8 @@ export default function MyProfilePage() {
         ...data,
         firstName,
         lastName,
+        id: user.uid,
+        role: 'personal',
         lastUpdated: new Date()
     };
 
@@ -245,7 +248,7 @@ export default function MyProfilePage() {
                         <FormField name={`experiences.${index}.description`} control={form.control} render={({ field }) => ( <FormItem><FormLabel>Description</FormLabel><FormControl><Textarea className="min-h-32" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem> )} />
                     </div>
                 ))}
-                <Button type="button" variant="outline" onClick={() => appendExperience({ jobTitle: '', company: '', description: '' })}><PlusCircle className="mr-2"/> Add Experience</Button>
+                <Button type="button" variant="outline" onClick={() => appendExperience({ jobTitle: '', company: '', location: '', startDate: '', endDate: '', description: '' })}><PlusCircle className="mr-2"/> Add Experience</Button>
               </div>
             </CardContent>
           </Card>
@@ -268,7 +271,7 @@ export default function MyProfilePage() {
                             </div>
                         </div>
                     ))}
-                    <Button type="button" variant="outline" onClick={() => appendEducation({ degree: '', institution: '' })}><PlusCircle className="mr-2"/> Add Education</Button>
+                    <Button type="button" variant="outline" onClick={() => appendEducation({ degree: '', institution: '', startDate: '', endDate: ''})}><PlusCircle className="mr-2"/> Add Education</Button>
                 </CardContent>
             </Card>
         )}
@@ -317,5 +320,3 @@ export default function MyProfilePage() {
     </Form>
   );
 }
-
-    
