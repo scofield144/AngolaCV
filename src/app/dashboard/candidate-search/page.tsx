@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -90,8 +91,8 @@ export default function CandidateSearchPage() {
     // Here, we just filter the mock data.
     const filtered = candidates.filter(candidate => 
       (filters.keywords ? (candidate.name.toLowerCase().includes(filters.keywords.toLowerCase()) || candidate.skills.some(s => s.toLowerCase().includes(filters.keywords.toLowerCase()))) : true) &&
-      (filters.location ? candidate.location === filters.location : true) &&
-      (filters.industry ? candidate.industry === filters.industry : true)
+      (filters.location && filters.location !== 'all-provinces' ? candidate.location === filters.location : true) &&
+      (filters.industry && filters.industry !== 'all-industries' ? candidate.industry === filters.industry : true)
     );
     setSearchResults(filtered);
   };
@@ -122,7 +123,7 @@ export default function CandidateSearchPage() {
                   <SelectValue placeholder="Select a province" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Provinces</SelectItem>
+                  <SelectItem value="all-provinces">All Provinces</SelectItem>
                   {angolanProvinces.map(province => (
                     <SelectItem key={province} value={province}>{province}</SelectItem>
                   ))}
@@ -136,7 +137,7 @@ export default function CandidateSearchPage() {
                   <SelectValue placeholder="Select an industry" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Industries</SelectItem>
+                  <SelectItem value="all-industries">All Industries</SelectItem>
                   {industries.map(industry => (
                     <SelectItem key={industry} value={industry}>{industry}</SelectItem>
                   ))}
