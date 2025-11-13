@@ -1,0 +1,148 @@
+/**
+ * @fileoverview Firestore Security Rules for AngolaCV Pro.
+ *
+ * Core Philosophy: This ruleset enforces a strict user-ownership model for user profiles, CVs, and cover letters.
+ * All data is nested under /users/{userId}, and access is granted only to the authenticated user matching the {userId}.
+ * CV and CoverLetter templates are publically accessible.
+ * Skills are publically accessible.
+ *
+ * Data Structure:
+ * - /users/{userId}/profile: User profile information.
+ * - /users/{userId}/cvs/{cvId}: CVs created by the user.
+ * - /users/{userId}/coverLetters/{coverLetterId}: Cover letters created by the user.
+ * - /cvTemplates/{cvTemplateId}: CV templates available in the application.
+ * - /coverLetterTemplates/{coverLetterTemplateId}: Cover letter templates available in the application.
+ * - /skills/{skillId}: Skills available in the application.
+ *
+ * Key Security Decisions:
+ * - User listing is disallowed.
+ * - Public read access is granted to CV templates, cover letter templates and skills.
+ * - Ownership is enforced by matching the authenticated user's UID against the {userId} in the path.
+ *
+ * Denormalization for Authorization:
+ * - The `userProfileId` is denormalized within the CV and CoverLetter documents to enable simplified authorization checks against the parent `userId` path.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /**
+     * @description Checks if the authenticated user ID matches the provided user ID.
+     * @path N/A
+     */
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+
+    /**
+     * @description Enforces user-ownership for profile documents.
+     * @path /users/{userId}/profile
+     * @allow (create) User 'user123' can create a profile with matching userId.
+     * @allow (get) User 'user123' can read their own profile.
+     * @allow (update) User 'user123' can update their own profile.
+     * @allow (delete) User 'user123' can delete their own profile.
+     * @deny (create) User 'user456' cannot create a profile for 'user123'.
+     * @deny (get) User 'user456' cannot read 'user123's profile.
+     * @principle Enforces document ownership for all operations.
+     */
+    match /users/{userId}/profile {
+      allow get: if isOwner(userId);
+      allow list: if false;
+      allow create: if isOwner(userId);
+      allow update: if isOwner(userId);
+      allow delete: if isOwner(userId);
+    }
+
+    /**
+     * @description Enforces user-ownership for CV documents.
+     * @path /users/{userId}/cvs/{cvId}
+     * @allow (create) User 'user123' can create a CV with matching userId.
+     * @allow (get) User 'user123' can read their own CV.
+     * @allow (update) User 'user123' can update their own CV.
+     * @allow (delete) User 'user123' can delete their own CV.
+     * @deny (create) User 'user456' cannot create a CV for 'user123'.
+     * @deny (get) User 'user456' cannot read 'user123's CV.
+     * @principle Enforces document ownership for all operations.
+     */
+    match /users/{userId}/cvs/{cvId} {
+      allow get: if isOwner(userId);
+      allow list: if false;
+      allow create: if isOwner(userId);
+      allow update: if isOwner(userId);
+      allow delete: if isOwner(userId);
+    }
+
+    /**
+     * @description Enforces user-ownership for CoverLetter documents.
+     * @path /users/{userId}/coverLetters/{coverLetterId}
+     * @allow (create) User 'user123' can create a CoverLetter with matching userId.
+     * @allow (get) User 'user123' can read their own CoverLetter.
+     * @allow (update) User 'user123' can update their own CoverLetter.
+     * @allow (delete) User 'user123' can delete their own CoverLetter.
+     * @deny (create) User 'user456' cannot create a CoverLetter for 'user123'.
+     * @deny (get) User 'user456' cannot read 'user123's CoverLetter.
+     * @principle Enforces document ownership for all operations.
+     */
+    match /users/{userId}/coverLetters/{coverLetterId} {
+      allow get: if isOwner(userId);
+      allow list: if false;
+      allow create: if isOwner(userId);
+      allow update: if isOwner(userId);
+      allow delete: if isOwner(userId);
+    }
+
+    /**
+     * @description Grants public read access to CV templates.  Write access is denied.
+     * @path /cvTemplates/{cvTemplateId}
+     * @allow (get) Any user can read any CV template.
+     * @allow (list) Any user can list CV templates.
+     * @deny (create) No user can create CV templates.
+     * @deny (update) No user can update CV templates.
+     * @deny (delete) No user can delete CV templates.
+     * @principle Allows public read access while restricting write access.
+     */
+    match /cvTemplates/{cvTemplateId} {
+      allow get: if true;
+      allow list: if true;
+      allow create: if false;
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    /**
+     * @description Grants public read access to CoverLetter templates. Write access is denied.
+     * @path /coverLetterTemplates/{coverLetterTemplateId}
+     * @allow (get) Any user can read any CoverLetter template.
+     * @allow (list) Any user can list CoverLetter templates.
+     * @deny (create) No user can create CoverLetter templates.
+     * @deny (update) No user can update CoverLetter templates.
+     * @deny (delete) No user can delete CoverLetter templates.
+     * @principle Allows public read access while restricting write access.
+     */
+    match /coverLetterTemplates/{coverLetterTemplateId} {
+      allow get: if true;
+      allow list: if true;
+      allow create: if false;
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    /**
+     * @description Grants public read access to skills. Write access is denied.
+     * @path /skills/{skillId}
+     * @allow (get) Any user can read any skill.
+     * @allow (list) Any user can list skills.
+     * @deny (create) No user can create skills.
+     * @deny (update) No user can update skills.
+     * @deny (delete) No user can delete skills.
+     * @principle Allows public read access while restricting write access.
+     */
+    match /skills/{skillId} {
+      allow get: if true;
+      allow list: if true;
+      allow create: if false;
+      allow update: if false;
+      allow delete: if false;
+    }
+  }
+}

@@ -1,0 +1,376 @@
+{
+  "entities": {
+    "UserProfile": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "UserProfile",
+      "type": "object",
+      "description": "Represents a user profile within the AngolaCV Pro application.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the UserProfile entity."
+        },
+        "firstName": {
+          "type": "string",
+          "description": "User's first name."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "User's last name."
+        },
+        "email": {
+          "type": "string",
+          "description": "User's email address.",
+          "format": "email"
+        },
+        "phoneNumber": {
+          "type": "string",
+          "description": "User's phone number."
+        },
+        "location": {
+          "type": "string",
+          "description": "User's location (e.g., Angolan province)."
+        },
+        "profilePicture": {
+          "type": "string",
+          "description": "URL of the user's profile picture.",
+          "format": "uri"
+        },
+        "socialLinks": {
+          "type": "array",
+          "description": "List of URLs to user's social media profiles.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "cvIds": {
+          "type": "array",
+          "description": "References to CVs created by the user. (Relationship: UserProfile 1:N CV)",
+          "items": {
+            "type": "string"
+          }
+        },
+        "coverLetterIds": {
+          "type": "array",
+          "description": "References to CoverLetters created by the user. (Relationship: UserProfile 1:N CoverLetter)",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "firstName",
+        "lastName",
+        "email"
+      ]
+    },
+    "CV": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "CV",
+      "type": "object",
+      "description": "Represents a Curriculum Vitae (CV) created by a user.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the CV entity."
+        },
+        "userProfileId": {
+          "type": "string",
+          "description": "Reference to the UserProfile who owns this CV. (Relationship: UserProfile 1:N CV)"
+        },
+        "templateId": {
+          "type": "string",
+          "description": "Reference to the CVTemplate used for this CV. (Relationship: CVTemplate 1:N CV)"
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of the CV."
+        },
+        "creationDate": {
+          "type": "string",
+          "description": "Date when the CV was created.",
+          "format": "date-time"
+        },
+        "lastUpdated": {
+          "type": "string",
+          "description": "Date when the CV was last updated.",
+          "format": "date-time"
+        },
+        "sections": {
+          "type": "array",
+          "description": "Structured content of the CV (e.g., experience, education).",
+          "items": {
+            "type": "string"
+          }
+        },
+        "skills": {
+          "type": "array",
+          "description": "References to the skills of CVs. (Relationship: CV N:N Skill)",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "userProfileId",
+        "templateId",
+        "title",
+        "creationDate"
+      ]
+    },
+    "CoverLetter": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "CoverLetter",
+      "type": "object",
+      "description": "Represents a cover letter created by a user.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the CoverLetter entity."
+        },
+        "userProfileId": {
+          "type": "string",
+          "description": "Reference to the UserProfile who owns this CoverLetter. (Relationship: UserProfile 1:N CoverLetter)"
+        },
+        "templateId": {
+          "type": "string",
+          "description": "Reference to the CoverLetterTemplate used for this CoverLetter. (Relationship: CoverLetterTemplate 1:N CoverLetter)"
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of the cover letter."
+        },
+        "creationDate": {
+          "type": "string",
+          "description": "Date when the cover letter was created.",
+          "format": "date-time"
+        },
+        "lastUpdated": {
+          "type": "string",
+          "description": "Date when the cover letter was last updated.",
+          "format": "date-time"
+        },
+        "content": {
+          "type": "string",
+          "description": "Content of the cover letter."
+        }
+      },
+      "required": [
+        "id",
+        "userProfileId",
+        "templateId",
+        "title",
+        "creationDate"
+      ]
+    },
+    "CVTemplate": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "CVTemplate",
+      "type": "object",
+      "description": "Represents a template used for creating CVs.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the CVTemplate entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the CV template."
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the CV template."
+        },
+        "previewImage": {
+          "type": "string",
+          "description": "URL of the preview image for the template.",
+          "format": "uri"
+        },
+        "sections": {
+          "type": "array",
+          "description": "Sections included in the CV template.",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ]
+    },
+    "CoverLetterTemplate": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "CoverLetterTemplate",
+      "type": "object",
+      "description": "Represents a template used for creating cover letters.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the CoverLetterTemplate entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the cover letter template."
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the cover letter template."
+        },
+        "previewImage": {
+          "type": "string",
+          "description": "URL of the preview image for the template.",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ]
+    },
+    "Skill": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Skill",
+      "type": "object",
+      "description": "Represents a skill.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Skill entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the skill."
+        },
+        "cvIds": {
+          "type": "array",
+          "description": "References to CVs. (Relationship: CV N:N Skill)",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}/profile",
+        "definition": {
+          "entityName": "UserProfile",
+          "schema": {
+            "$ref": "#/backend/entities/UserProfile"
+          },
+          "description": "Stores user profile information. This path enforces ownership by the user identified by {userId}.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier of the user."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/cvs/{cvId}",
+        "definition": {
+          "entityName": "CV",
+          "schema": {
+            "$ref": "#/backend/entities/CV"
+          },
+          "description": "Stores CVs created by the user. This path enforces ownership by the user identified by {userId}.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier of the user."
+            },
+            {
+              "name": "cvId",
+              "description": "The unique identifier of the CV."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/coverLetters/{coverLetterId}",
+        "definition": {
+          "entityName": "CoverLetter",
+          "schema": {
+            "$ref": "#/backend/entities/CoverLetter"
+          },
+          "description": "Stores cover letters created by the user. This path enforces ownership by the user identified by {userId}.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier of the user."
+            },
+            {
+              "name": "coverLetterId",
+              "description": "The unique identifier of the cover letter."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/cvTemplates/{cvTemplateId}",
+        "definition": {
+          "entityName": "CVTemplate",
+          "schema": {
+            "$ref": "#/backend/entities/CVTemplate"
+          },
+          "description": "Stores CV templates available in the application.",
+          "params": [
+            {
+              "name": "cvTemplateId",
+              "description": "The unique identifier of the CV template."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/coverLetterTemplates/{coverLetterTemplateId}",
+        "definition": {
+          "entityName": "CoverLetterTemplate",
+          "schema": {
+            "$ref": "#/backend/entities/CoverLetterTemplate"
+          },
+          "description": "Stores cover letter templates available in the application.",
+          "params": [
+            {
+              "name": "coverLetterTemplateId",
+              "description": "The unique identifier of the cover letter template."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/skills/{skillId}",
+        "definition": {
+          "entityName": "Skill",
+          "schema": {
+            "$ref": "#/backend/entities/Skill"
+          },
+          "description": "Stores skills available in the application.",
+          "params": [
+            {
+              "name": "skillId",
+              "description": "The unique identifier of the skill."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure is designed to support the AngolaCV Pro application, focusing on user profiles, CVs, cover letters, and related templates and skills. A core principle is Authorization Independence achieved through path-based ownership for user-specific data and denormalization where needed. \n\nThe `/users/{userId}/profile` collection stores user profile data.  CVs and Cover Letters are stored as subcollections under each user's profile (`/users/{userId}/cvs` and `/users/{userId}/coverLetters`), reinforcing path-based ownership and simplifying security rules. Each document in these subcollections implicitly belongs to the user identified by `{userId}`.\n\nCV and CoverLetter templates are stored in global collections (`/cvTemplates` and `/coverLetterTemplates`), as these are generally read-only and shared across all users.\n\nSkills are also stored in a global collection `/skills`, allowing efficient management and reuse of skills across multiple CVs. The relationship between CVs and Skills is managed through the `skills` array inside the CV document which contains the ids of skills. This avoids the creation of a separate join collection and simplifies data retrieval and security rules.\n\nThis structure supports QAPs (Rules are not Filters) by segregating user-specific data into path-based ownership, enabling secure list operations within a user's profile. Global collections such as `/cvTemplates`, `/coverLetterTemplates`, and `/skills` have simpler read rules, as they do not require user-specific authorization checks."
+  }
+}
