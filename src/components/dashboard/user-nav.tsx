@@ -13,18 +13,19 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useUser } from "@/firebase";
+import { useUser, useAuth } from "@/firebase";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { useRouter } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
+import { signOut } from "firebase/auth";
 
 export function UserNav() {
-  const { user } = useUser(); // Still useful for getting display info if a real session exists
+  const auth = useAuth();
+  const { user } = useUser();
   const router = useRouter();
 
   const handleLogout = async () => {
-    // For fictional accounts, we just redirect to the home page.
-    // When you re-enable Firebase, you'll add the signOut call back here.
+    await signOut(auth);
     router.push('/');
     toast({
       title: "Logged Out",
@@ -43,9 +44,8 @@ export function UserNav() {
     return names[0].substring(0, 2).toUpperCase();
   }
 
-  // Determine display information, defaulting to a fictional user
-  const displayName = user?.displayName || "Fictional User";
-  const email = user?.email || "user@example.com";
+  const displayName = user?.isAnonymous ? "Guest User" : user?.displayName || user?.email || "User";
+  const email = user?.isAnonymous ? "guest@loneus.com" : user?.email || "";
   const isAnonymous = user?.isAnonymous ?? false;
 
   return (

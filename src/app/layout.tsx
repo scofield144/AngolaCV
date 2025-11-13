@@ -2,16 +2,17 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { FirebaseClientProvider } from '@/firebase/client-provider';
+import { Badge } from '@/components/ui/badge';
 
 export const metadata: Metadata = {
-  title: 'AngolaCV Pro',
+  title: 'Loneus',
   description: 'Create and manage your professional CV for the Angolan job market.',
 };
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.Node;
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>

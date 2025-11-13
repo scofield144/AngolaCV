@@ -6,7 +6,7 @@ export function Logo() {
       <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary-foreground/10 text-primary-foreground">
         <Building2 className="h-5 w-5" />
       </div>
-      <span className="hidden group-data-[state=expanded]:block">AngolaCV Pro</span>
+      <span className="hidden group-data-[state=expanded]:block">Loneus</span>
     </div>
   );
 }
