@@ -1,10 +1,13 @@
+
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 import * as z from "zod";
 import { useState } from "react";
+import { doc } from 'firebase/firestore';
 
+import { useUser, useFirestore, setDocumentNonBlocking } from "@/firebase";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -87,6 +90,8 @@ const steps = [
 
 export default function MyProfilePage() {
   const [currentStep, setCurrentStep] = useState(1);
+  const { user } = useUser();
+  const firestore = useFirestore();
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
@@ -105,7 +110,7 @@ export default function MyProfilePage() {
   });
 
 
-  const { trigger } = form;
+  const { trigger, getValues } = form;
 
   async function handleNext() {
     const fields = steps[currentStep - 1].fields;
@@ -125,11 +130,33 @@ export default function MyProfilePage() {
   }
 
   function onSubmit(data: ProfileFormValues) {
+    if (!user || !firestore) {
+        toast({
+            variant: "destructive",
+            title: "Authentication Error",
+            description: "You must be logged in to save your profile."
+        });
+        return;
+    }
+
+    const userProfileRef = doc(firestore, 'users', user.uid);
+    
+    const [firstName, ...lastNameParts] = data.fullName.split(' ');
+    const lastName = lastNameParts.join(' ');
+    
+    const profileData = {
+        ...data,
+        firstName,
+        lastName,
+        lastUpdated: new Date()
+    };
+
+    setDocumentNonBlocking(userProfileRef, profileData, { merge: true });
+
     toast({
       title: "Profile Saved!",
       description: "Your CV information has been updated successfully.",
     });
-    console.log(data);
   }
 
   return (
@@ -190,7 +217,7 @@ export default function MyProfilePage() {
                   <AiSuggestionDialog
                     currentJobTitle={form.watch('jobTitle')}
                     onSuggestionSelect={(suggestion) => {
-                      const currentExperience = form.getValues('experiences');
+                      const currentExperience = getValues('experiences');
                       if (currentExperience.length > 0) {
                         form.setValue(`experiences.${currentExperience.length - 1}.description`, suggestion, { shouldValidate: true });
                       }
@@ -290,3 +317,5 @@ export default function MyProfilePage() {
     </Form>
   );
 }
+
+    

@@ -8,6 +8,7 @@ import { doc } from "firebase/firestore";
 interface UserProfile {
     id: string;
     role: 'personal' | 'recruiter';
+    fullName: string;
     firstName: string;
     lastName: string;
     email: string;
@@ -30,3 +31,5 @@ export function useUserProfile() {
     error: error,
   };
 }
+
+    

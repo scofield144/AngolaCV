@@ -1,3 +1,4 @@
+
 "use client";
 
 import { LogOut, Settings, User as UserIcon, ShieldQuestion } from "lucide-react";
@@ -48,9 +49,7 @@ export function UserNav() {
 
   const displayName = user?.isAnonymous 
       ? "Guest User" 
-      : profile?.firstName && profile?.lastName 
-      ? `${profile.firstName} ${profile.lastName}`
-      : user?.displayName || user?.email || "User";
+      : profile?.fullName || user?.displayName || user?.email || "User";
 
   const email = user?.isAnonymous ? "guest@loneus.com" : user?.email || "";
   const isAnonymous = user?.isAnonymous ?? false;
@@ -107,3 +106,5 @@ export function UserNav() {
     </DropdownMenu>
   );
 }
+
+    
