@@ -4,7 +4,7 @@ export default function MyLibraryPage() {
   return (
     <PlaceholderPage 
       title="My Library"
-      description="Your saved CVs, cover letters, and portfolios will appear here."
+      description="Your saved CVs, cover letters, and portfolios will appear here. This feature is exclusive to Personal accounts."
     />
   );
 }

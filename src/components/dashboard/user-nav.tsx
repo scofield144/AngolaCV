@@ -14,14 +14,15 @@ import {
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useUser, useAuth } from "@/firebase";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { useRouter } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
 import { signOut } from "firebase/auth";
+import { useUserProfile } from "@/hooks/use-user-profile";
 
 export function UserNav() {
   const auth = useAuth();
   const { user } = useUser();
+  const { profile } = useUserProfile();
   const router = useRouter();
 
   const handleLogout = async () => {
@@ -33,20 +34,27 @@ export function UserNav() {
     });
   };
   
-  const userAvatar = PlaceHolderImages.find(img => img.id === 'user-avatar-small');
-
   const getInitials = (name?: string | null) => {
     if (!name) return "G"; // Guest
     const names = name.split(' ');
-    if (names.length > 1) {
+    if (names.length > 1 && names[0] && names[names.length - 1]) {
       return `${names[0][0]}${names[names.length - 1][0]}`.toUpperCase();
     }
-    return names[0].substring(0, 2).toUpperCase();
+    if (names[0]) {
+      return names[0].substring(0, 2).toUpperCase();
+    }
+    return "G";
   }
 
-  const displayName = user?.isAnonymous ? "Guest User" : user?.displayName || user?.email || "User";
+  const displayName = user?.isAnonymous 
+      ? "Guest User" 
+      : profile?.firstName && profile?.lastName 
+      ? `${profile.firstName} ${profile.lastName}`
+      : user?.displayName || user?.email || "User";
+
   const email = user?.isAnonymous ? "guest@loneus.com" : user?.email || "";
   const isAnonymous = user?.isAnonymous ?? false;
+  const profileLink = profile?.role === 'recruiter' ? "/dashboard/company-profile" : "/dashboard/cv-editor";
 
   return (
     <DropdownMenu>
@@ -54,10 +62,7 @@ export function UserNav() {
         <Button variant="ghost" className="relative h-9 w-9 rounded-full">
           <Avatar className="h-9 w-9">
             {user && !user.isAnonymous && user.photoURL && (
-                <AvatarImage src={user.photoURL} alt={user.displayName || "User"} />
-            )}
-            {userAvatar && (
-                <AvatarImage src={userAvatar.imageUrl} data-ai-hint={userAvatar.imageHint} alt="User" />
+                <AvatarImage src={user.photoURL} alt={displayName} />
             )}
             <AvatarFallback>{getInitials(displayName)}</AvatarFallback>
           </Avatar>
@@ -74,7 +79,7 @@ export function UserNav() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-            <Link href="/dashboard/cv-editor">
+            <Link href={profileLink}>
               <DropdownMenuItem>
                 <UserIcon className="mr-2" />
                 <span>Profile</span>

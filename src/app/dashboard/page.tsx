@@ -1,3 +1,7 @@
+"use client";
+
+import { useUserProfile } from "@/hooks/use-user-profile";
+import { PlaceholderPage } from "@/components/dashboard/placeholder-page";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { ArrowUpRight, Edit, Eye, Share2, Star } from "lucide-react";
@@ -6,7 +10,7 @@ import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 
-export default function DashboardPage() {
+function PersonalDashboard() {
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
       <Card className="col-span-1 lg:col-span-4">
@@ -85,4 +89,28 @@ export default function DashboardPage() {
       </div>
     </div>
   );
+}
+
+function RecruiterDashboard() {
+    return (
+        <PlaceholderPage 
+            title="Candidate Search"
+            description="Start searching for the best talent in Angola."
+        />
+    )
+}
+
+
+export default function DashboardPage() {
+    const { profile, isLoading } = useUserProfile();
+
+    if (isLoading) {
+        return <div>Loading...</div>
+    }
+
+    if (profile?.role === 'recruiter') {
+        return <RecruiterDashboard />;
+    }
+
+    return <PersonalDashboard />;
 }
