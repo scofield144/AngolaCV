@@ -12,7 +12,7 @@ export default function DashboardPage() {
       <Card className="col-span-1 lg:col-span-4">
         <CardHeader className="flex flex-row items-center justify-between">
           <div>
-            <CardTitle>My CV Preview</CardTitle>
+            <CardTitle>My Europass Preview</CardTitle>
             <CardDescription>A snapshot of your current professional profile.</CardDescription>
           </div>
           <Button asChild variant="outline" size="sm">

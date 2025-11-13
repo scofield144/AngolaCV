@@ -13,6 +13,7 @@ import {
   PlusCircle,
   Share2,
   Briefcase,
+  CheckCircle,
 } from "lucide-react";
 
 import {
@@ -30,17 +31,17 @@ import { Logo } from "@/components/logo";
 import { ShareProfileDialog } from "./share-profile-dialog";
 
 const mainNav = [
-  { href: "/dashboard", icon: Home, label: "Dashboard" },
+  { href: "/dashboard", icon: Home, label: "My Europass" },
   { href: "/dashboard/my-library", icon: Library, label: "My Library" },
   { href: "/dashboard/my-skills", icon: Star, label: "My Skills" },
   { href: "/dashboard/my-interests", icon: Heart, label: "My Interests" },
   { href: "/dashboard/my-applications", icon: Send, label: "My Applications" },
-  { href: "/dashboard/job-board", icon: Briefcase, label: "Job Board" },
 ];
 
 const featuresNav = [
   { href: "/dashboard/cv-editor", icon: PlusCircle, label: "Create CV" },
   { href: "/dashboard/cover-letters", icon: FileText, label: "Create Cover Letter" },
+  { href: "/dashboard/ats-checker", icon: CheckCircle, label: "ATS Checker" },
 ];
 
 export function DashboardNav() {
@@ -77,7 +78,7 @@ export function DashboardNav() {
               <SidebarMenuItem key={item.href}>
                 <Link href={item.href}>
                   <SidebarMenuButton
-                    isActive={pathname === item.href}
+                    isActive={pathname.startsWith(item.href)}
                     tooltip={item.label}
                   >
                     <item.icon />
