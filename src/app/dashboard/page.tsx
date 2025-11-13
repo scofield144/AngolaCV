@@ -4,7 +4,7 @@ import { useUserProfile } from "@/hooks/use-user-profile";
 import { PlaceholderPage } from "@/components/dashboard/placeholder-page";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
-import { ArrowUpRight, Edit, Eye, Share2, Star } from "lucide-react";
+import { ArrowUpRight, Edit, Eye, Share2, Star, Loader2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
@@ -93,10 +93,20 @@ function PersonalDashboard() {
 
 function RecruiterDashboard() {
     return (
-        <PlaceholderPage 
-            title="Candidate Search"
-            description="Start searching for the best talent in Angola."
-        />
+        <div className="flex flex-col items-center justify-center h-full">
+             <PlaceholderPage 
+                title="Welcome, Recruiter!"
+                description="This is your dashboard. Start by searching for candidates or setting up your company profile."
+             />
+             <div className="mt-6 flex gap-4">
+                <Button asChild>
+                    <Link href="/dashboard/candidate-search">Search Candidates</Link>
+                </Button>
+                <Button asChild variant="outline">
+                    <Link href="/dashboard/company-profile">Company Profile</Link>
+                </Button>
+             </div>
+        </div>
     )
 }
 
@@ -105,7 +115,11 @@ export default function DashboardPage() {
     const { profile, isLoading } = useUserProfile();
 
     if (isLoading) {
-        return <div>Loading...</div>
+       return (
+         <div className="flex h-[50vh] w-full items-center justify-center">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+         </div>
+       );
     }
 
     if (profile?.role === 'recruiter') {

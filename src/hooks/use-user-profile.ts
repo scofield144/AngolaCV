@@ -19,8 +19,8 @@ export function useUserProfile() {
 
   const profileRef = useMemoFirebase(() => {
     if (!user || !firestore) return null;
-    // Path to the user's profile document
-    return doc(firestore, `users/${user.uid}/profile`);
+    // The path should point to the user's profile document directly.
+    return doc(firestore, 'users', user.uid, 'profile');
   }, [user, firestore]);
 
   const { data, isLoading, error } = useDoc<UserProfile>(profileRef);
