@@ -3,6 +3,7 @@
 
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { initializeFirebase } from '@/firebase';
+import { addDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 
 export async function saveCoverLetter(
   userId: string,
@@ -18,7 +19,7 @@ export async function saveCoverLetter(
     const { firestore } = initializeFirebase();
     const coverLettersRef = collection(firestore, 'users', userId, 'coverLetters');
 
-    await addDoc(coverLettersRef, {
+    await addDocumentNonBlocking(coverLettersRef, {
       title,
       content,
       lastUpdated: serverTimestamp(),
