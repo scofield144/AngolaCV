@@ -7,15 +7,13 @@ import {
   Heart,
   Home,
   Library,
-  Lightbulb,
   Send,
   Settings,
   Star,
   PlusCircle,
-  Briefcase,
+  Share2,
 } from "lucide-react";
 
-import { cn } from "@/lib/utils";
 import {
   Sidebar,
   SidebarContent,
@@ -28,9 +26,10 @@ import {
   SidebarGroupLabel,
 } from "@/components/ui/sidebar";
 import { Logo } from "@/components/logo";
+import { ShareProfileDialog } from "./share-profile-dialog";
 
 const mainNav = [
-  { href: "/dashboard", icon: Home, label: "My Europass" },
+  { href: "/dashboard", icon: Home, label: "Dashboard" },
   { href: "/dashboard/my-library", icon: Library, label: "My Library" },
   { href: "/dashboard/my-skills", icon: Star, label: "My Skills" },
   { href: "/dashboard/my-interests", icon: Heart, label: "My Interests" },
@@ -40,8 +39,6 @@ const mainNav = [
 const featuresNav = [
   { href: "/dashboard/cv-editor", icon: PlusCircle, label: "Create CV" },
   { href: "/dashboard/cover-letters", icon: FileText, label: "Create Cover Letter" },
-  { href: "/dashboard/ats-checker", icon: Lightbulb, label: "ATS Checker" },
-  { href: "/dashboard/job-board", icon: Briefcase, label: "Job Board" },
 ];
 
 export function DashboardNav() {
@@ -87,6 +84,14 @@ export function DashboardNav() {
                 </Link>
               </SidebarMenuItem>
             ))}
+             <SidebarMenuItem>
+                <ShareProfileDialog>
+                    <SidebarMenuButton tooltip="Share My Profile">
+                        <Share2 />
+                        <span>Share My Profile</span>
+                    </SidebarMenuButton>
+                </ShareProfileDialog>
+            </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>

@@ -52,7 +52,7 @@ const defaultValues: Partial<ProfileFormValues> = {
   languages: "- Portuguese (Native)\n- English (Fluent)",
 };
 
-export default function CvEditorPage() {
+export default function MyProfilePage() {
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     defaultValues,
@@ -71,7 +71,7 @@ export default function CvEditorPage() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold font-headline">CV Editor</h1>
+          <h1 className="text-2xl font-bold font-headline">My Profile</h1>
           <Button type="submit">
             <Save className="mr-2 h-4 w-4" /> Save Changes
           </Button>
@@ -107,7 +107,7 @@ export default function CvEditorPage() {
           <CardHeader>
             <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>
-                    <CardTitle>Summary & Experience</CardTitle>
+                    <CardTitle>Professional Experience</CardTitle>
                     <CardDescription>Your professional summary and work history.</CardDescription>
                 </div>
                 <AiSuggestionDialog
@@ -126,7 +126,7 @@ export default function CvEditorPage() {
         </Card>
         
         <Card>
-            <CardHeader><CardTitle>Education & Training</CardTitle><CardDescription>List your degrees, certifications, and relevant training.</CardDescription></CardHeader>
+            <CardHeader><CardTitle>Education and Training</CardTitle><CardDescription>List your degrees, certifications, and relevant training.</CardDescription></CardHeader>
             <CardContent>
                 <FormField name="education" control={form.control} render={({ field }) => ( <FormItem><FormControl><Textarea placeholder="e.g., Bachelor of Science in Computer Science, Universidade Agostinho Neto (2015-2019)" className="min-h-24" {...field} /></FormControl><FormMessage /></FormItem> )} />
             </CardContent>
