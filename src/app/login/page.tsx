@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Building2, Loader2, Mail, Lock, User } from 'lucide-react';
+import { Building2, Loader2, Mail, Lock, User, Briefcase } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -15,6 +15,7 @@ import {
   signInAnonymously
 } from 'firebase/auth';
 import Link from 'next/link';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -111,6 +112,53 @@ export default function LoginPage() {
     );
   }
 
+  const accountForm = (
+      <div className="space-y-4">
+        <div className="space-y-2">
+            <Label htmlFor="email">Email</Label>
+            <div className="relative">
+            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input 
+                id="email" 
+                type="email" 
+                placeholder="your.email@example.com" 
+                required 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="pl-10"
+                disabled={isAuthActionLoading}
+            />
+            </div>
+        </div>
+        <div className="space-y-2">
+            <Label htmlFor="password">Password</Label>
+            <div className="relative">
+            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input 
+                id="password" 
+                type="password" 
+                placeholder="••••••••" 
+                required 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="pl-10"
+                disabled={isAuthActionLoading}
+            />
+            </div>
+        </div>
+        <div className="grid grid-cols-2 gap-2">
+            <Button onClick={() => handleAuthAction('login')} disabled={isAuthActionLoading || !email || !password}>
+            {isAuthActionLoading && <Loader2 className="animate-spin" />}
+            Login
+            </Button>
+            <Button variant="secondary" onClick={() => handleAuthAction('signup')} disabled={isAuthActionLoading || !email || !password}>
+            {isAuthActionLoading && <Loader2 className="animate-spin" />}
+            Sign Up
+            </Button>
+        </div>
+    </div>
+  );
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-center gap-8 bg-background p-4">
       <Link href="/" className="flex items-center gap-3 font-headline text-3xl font-bold text-primary">
@@ -120,66 +168,37 @@ export default function LoginPage() {
 
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle>Welcome</CardTitle>
-          <CardDescription>Get instant access for testing purposes or log in with your account.</CardDescription>
+          <CardTitle>Welcome Back</CardTitle>
+          <CardDescription>Select your account type to continue.</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-           <Button className="w-full" onClick={() => handleAuthAction('anonymous')} disabled={isAuthActionLoading}>
-                {isAuthActionLoading ? <Loader2 className="animate-spin" /> : <User className="mr-2" />}
-                Continue as Guest (Easy Access)
-            </Button>
-            <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t" />
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-card px-2 text-muted-foreground">
-                        Or with an account
-                    </span>
-                </div>
-            </div>
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input 
-                id="email" 
-                type="email" 
-                placeholder="your.email@example.com" 
-                required 
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="pl-10"
-                disabled={isAuthActionLoading}
-              />
-            </div>
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input 
-                id="password" 
-                type="password" 
-                placeholder="••••••••" 
-                required 
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="pl-10"
-                disabled={isAuthActionLoading}
-              />
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-2">
-            <Button onClick={() => handleAuthAction('login')} disabled={isAuthActionLoading || !email || !password}>
-              {isAuthActionLoading && <Loader2 className="animate-spin" />}
-              Login
-            </Button>
-            <Button variant="secondary" onClick={() => handleAuthAction('signup')} disabled={isAuthActionLoading || !email || !password}>
-              {isAuthActionLoading && <Loader2 className="animate-spin" />}
-              Sign Up
-            </Button>
-          </div>
+        <CardContent>
+            <Tabs defaultValue="personal">
+                <TabsList className="grid w-full grid-cols-2">
+                    <TabsTrigger value="personal"><User className="mr-2"/>Personal</TabsTrigger>
+                    <TabsTrigger value="company"><Briefcase className="mr-2"/>Recruiter</TabsTrigger>
+                </TabsList>
+                <TabsContent value="personal" className="mt-4">
+                    <Button className="w-full mb-4" onClick={() => handleAuthAction('anonymous')} disabled={isAuthActionLoading}>
+                        {isAuthActionLoading ? <Loader2 className="animate-spin" /> : <User className="mr-2" />}
+                        Continue as Guest (Easy Access)
+                    </Button>
+                    <div className="relative mb-4">
+                        <div className="absolute inset-0 flex items-center">
+                            <span className="w-full border-t" />
+                        </div>
+                        <div className="relative flex justify-center text-xs uppercase">
+                            <span className="bg-card px-2 text-muted-foreground">
+                                Or with an account
+                            </span>
+                        </div>
+                    </div>
+                    {accountForm}
+                </TabsContent>
+                <TabsContent value="company" className="mt-4">
+                     <p className="text-sm text-muted-foreground mb-4 text-center">Recruiter login is for authorized company accounts.</p>
+                     {accountForm}
+                </TabsContent>
+            </Tabs>
         </CardContent>
       </Card>
     </main>
