@@ -1,7 +1,7 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import * as z from "zod";
 import { useState } from "react";
 
@@ -18,9 +18,26 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
-import { Save, ArrowRight, ArrowLeft } from "lucide-react";
+import { Save, ArrowRight, ArrowLeft, PlusCircle, Trash2 } from "lucide-react";
 import { AiSuggestionDialog } from "./_components/ai-suggestion-dialog";
 import { Progress } from "@/components/ui/progress";
+import { Separator } from "@/components/ui/separator";
+
+const experienceSchema = z.object({
+  jobTitle: z.string().min(2, "Job title is required."),
+  company: z.string().min(2, "Company is required."),
+  location: z.string().optional(),
+  startDate: z.string().optional(),
+  endDate: z.string().optional(),
+  description: z.string().optional(),
+});
+
+const educationSchema = z.object({
+    degree: z.string().min(2, "Degree or certificate is required."),
+    institution: z.string().min(2, "Institution is required."),
+    startDate: z.string().optional(),
+    endDate: z.string().optional(),
+});
 
 const profileFormSchema = z.object({
   fullName: z.string().min(2, "Full name must be at least 2 characters."),
@@ -32,8 +49,8 @@ const profileFormSchema = z.object({
   github: z.string().url({ message: "Please enter a valid URL." }).optional().or(z.literal('')),
   portfolio: z.string().url({ message: "Please enter a valid URL." }).optional().or(z.literal('')),
   summary: z.string().max(1000, "Summary cannot exceed 1000 characters.").optional(),
-  experience: z.string().optional(),
-  education: z.string().optional(),
+  experiences: z.array(experienceSchema),
+  educations: z.array(educationSchema),
   languages: z.string().optional(),
   skills: z.string().optional(),
 });
@@ -49,15 +66,19 @@ const defaultValues: Partial<ProfileFormValues> = {
   skills: "React, Node.js, PostgreSQL, DevOps, TypeScript, English, Portuguese",
   linkedin: "https://linkedin.com/in/johndoe",
   github: "https://github.com/johndoe",
-  experience: "- Led the development of a new e-commerce platform, resulting in a 30% increase in sales.\n- Mentored junior developers and conducted code reviews.",
-  education: "- Bachelor of Science in Computer Science, Universidade Agostinho Neto (2015-2019)",
+  experiences: [
+    { jobTitle: "Senior Developer", company: "Tech Solutions LDA", location: "Luanda", startDate: "2020-01-01", endDate: "Present", description: "- Led the development of a new e-commerce platform, resulting in a 30% increase in sales.\n- Mentored junior developers and conducted code reviews."}
+  ],
+  educations: [
+      { degree: "Bachelor of Science in Computer Science", institution: "Universidade Agostinho Neto", startDate: "2015-09-01", endDate: "2019-07-01" }
+  ],
   languages: "- Portuguese (Native)\n- English (Fluent)",
 };
 
 const steps = [
   { id: 1, title: 'Personal Data', fields: ['fullName', 'jobTitle', 'email', 'phone', 'location', 'linkedin', 'github', 'portfolio'] },
-  { id: 2, title: 'Professional Experience', fields: ['summary', 'experience'] },
-  { id: 3, title: 'Education and Training', fields: ['education'] },
+  { id: 2, title: 'Professional Experience', fields: ['summary', 'experiences'] },
+  { id: 3, title: 'Education and Training', fields: ['educations'] },
   { id: 4, title: 'Skills', fields: ['skills'] },
   { id: 5, title: 'Language Skills', fields: ['languages'] },
 ];
@@ -70,6 +91,17 @@ export default function MyProfilePage() {
     defaultValues,
     mode: "onChange",
   });
+  
+  const { fields: experienceFields, append: appendExperience, remove: removeExperience } = useFieldArray({
+    control: form.control,
+    name: "experiences",
+  });
+
+  const { fields: educationFields, append: appendEducation, remove: removeEducation } = useFieldArray({
+      control: form.control,
+      name: "educations",
+  });
+
 
   const { trigger } = form;
 
@@ -156,7 +188,10 @@ export default function MyProfilePage() {
                   <AiSuggestionDialog
                     currentJobTitle={form.watch('jobTitle')}
                     onSuggestionSelect={(suggestion) => {
-                      form.setValue("experience", suggestion, { shouldValidate: true });
+                      const currentExperience = form.getValues('experiences');
+                      if (currentExperience.length > 0) {
+                        form.setValue(`experiences.${currentExperience.length - 1}.description`, suggestion, { shouldValidate: true });
+                      }
                       toast({ title: "Content updated with AI suggestion." });
                     }}
                   />
@@ -164,7 +199,25 @@ export default function MyProfilePage() {
             </CardHeader>
             <CardContent className="space-y-6">
               <FormField name="summary" control={form.control} render={({ field }) => ( <FormItem><FormLabel>Professional Summary</FormLabel><FormControl><Textarea placeholder="A brief summary of your professional background..." {...field} /></FormControl><FormMessage /></FormItem> )} />
-              <FormField name="experience" control={form.control} render={({ field }) => ( <FormItem><FormLabel>Work Experience</FormLabel><FormControl><Textarea placeholder="Detail your work experience here... (use bullet points for clarity)" className="min-h-40" {...field} /></FormControl><FormMessage /></FormItem> )} />
+              <Separator />
+              <div className="space-y-4">
+                {experienceFields.map((field, index) => (
+                    <div key={field.id} className="p-4 border rounded-md relative space-y-4">
+                        <Button variant="ghost" size="icon" className="absolute top-2 right-2" onClick={() => removeExperience(index)}><Trash2 className="text-destructive" /></Button>
+                        <div className="grid grid-cols-2 gap-4">
+                            <FormField name={`experiences.${index}.jobTitle`} control={form.control} render={({ field }) => ( <FormItem><FormLabel>Job Title</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )} />
+                            <FormField name={`experiences.${index}.company`} control={form.control} render={({ field }) => ( <FormItem><FormLabel>Company</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )} />
+                            <FormField name={`experiences.${index}.location`} control={form.control} render={({ field }) => ( <FormItem><FormLabel>Location</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )} />
+                        </div>
+                         <div className="grid grid-cols-2 gap-4">
+                            <FormField name={`experiences.${index}.startDate`} control={form.control} render={({ field }) => ( <FormItem><FormLabel>Start Date</FormLabel><FormControl><Input type="date" {...field} /></FormControl><FormMessage /></FormItem> )} />
+                            <FormField name={`experiences.${index}.endDate`} control={form.control} render={({ field }) => ( <FormItem><FormLabel>End Date</FormLabel><FormControl><Input type="date" {...field} /></FormControl><FormMessage /></FormItem> )} />
+                        </div>
+                        <FormField name={`experiences.${index}.description`} control={form.control} render={({ field }) => ( <FormItem><FormLabel>Description</FormLabel><FormControl><Textarea className="min-h-32" {...field} /></FormControl><FormMessage /></FormItem> )} />
+                    </div>
+                ))}
+                <Button type="button" variant="outline" onClick={() => appendExperience({ jobTitle: '', company: '', description: '' })}><PlusCircle className="mr-2"/> Add Experience</Button>
+              </div>
             </CardContent>
           </Card>
         )}
@@ -172,8 +225,21 @@ export default function MyProfilePage() {
         {currentStep === 3 && (
             <Card>
                 <CardHeader><CardTitle>Education and Training</CardTitle><CardDescription>List your degrees, certifications, and relevant training.</CardDescription></CardHeader>
-                <CardContent>
-                    <FormField name="education" control={form.control} render={({ field }) => ( <FormItem><FormControl><Textarea placeholder="e.g., Bachelor of Science in Computer Science, Universidade Agostinho Neto (2015-2019)" className="min-h-24" {...field} /></FormControl><FormMessage /></FormItem> )} />
+                <CardContent className="space-y-4">
+                    {educationFields.map((field, index) => (
+                        <div key={field.id} className="p-4 border rounded-md relative space-y-4">
+                            <Button variant="ghost" size="icon" className="absolute top-2 right-2" onClick={() => removeEducation(index)}><Trash2 className="text-destructive" /></Button>
+                            <div className="grid grid-cols-2 gap-4">
+                                <FormField name={`educations.${index}.degree`} control={form.control} render={({ field }) => ( <FormItem><FormLabel>Degree / Certificate</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )} />
+                                <FormField name={`educations.${index}.institution`} control={form.control} render={({ field }) => ( <FormItem><FormLabel>Institution</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )} />
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <FormField name={`educations.${index}.startDate`} control={form.control} render={({ field }) => ( <FormItem><FormLabel>Start Date</FormLabel><FormControl><Input type="date" {...field} /></FormControl><FormMessage /></FormItem> )} />
+                                <FormField name={`educations.${index}.endDate`} control={form.control} render={({ field }) => ( <FormItem><FormLabel>End Date</FormLabel><FormControl><Input type="date" {...field} /></FormControl><FormMessage /></FormItem> )} />
+                            </div>
+                        </div>
+                    ))}
+                    <Button type="button" variant="outline" onClick={() => appendEducation({ degree: '', institution: '' })}><PlusCircle className="mr-2"/> Add Education</Button>
                 </CardContent>
             </Card>
         )}
@@ -222,3 +288,5 @@ export default function MyProfilePage() {
     </Form>
   );
 }
+
+    
