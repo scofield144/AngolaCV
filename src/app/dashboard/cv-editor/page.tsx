@@ -8,7 +8,8 @@ import * as z from "zod";
 import { useState } from "react";
 import { doc } from 'firebase/firestore';
 
-import { useUser, useFirestore, setDocumentNonBlocking } from "@/firebase";
+import { useUser, useFirestore } from "@/firebase";
+import { setDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -191,8 +192,8 @@ export default function MyProfilePage() {
                         <FormField name="fullName" control={form.control} render={({ field }) => ( <FormItem><FormLabel>Full Name</FormLabel><FormControl><Input placeholder="e.g., João Silva" {...field} /></FormControl><FormMessage /></FormItem> )} />
                         <FormField name="jobTitle" control={form.control} render={({ field }) => ( <FormItem><FormLabel>Job Title / Headline</FormLabel><FormControl><Input placeholder="e.g., Senior Software Engineer" {...field} /></FormControl><FormMessage /></FormItem> )} />
                         <FormField name="email" control={form.control} render={({ field }) => ( <FormItem><FormLabel>Email</FormLabel><FormControl><Input type="email" placeholder="your.email@example.com" {...field} /></FormControl><FormMessage /></FormItem> )} />
-                        <FormField name="phone" control={form.control} render={({ field }) => ( <FormItem><FormLabel>Phone Number</FormLabel><FormControl><Input placeholder="+244..." {...field} /></FormControl><FormMessage /></FormItem> )} />
-                        <FormField name="location" control={form.control} render={({ field }) => ( <FormItem><FormLabel>Location</FormLabel><FormControl><Input placeholder="e.g., Luanda, Angola" {...field} /></FormControl><FormMessage /></FormItem> )} />
+                        <FormField name="phone" control={form.control} render={({ field }) => ( <FormItem><FormLabel>Phone Number</FormLabel><FormControl><Input placeholder="+244..." {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem> )} />
+                        <FormField name="location" control={form.control} render={({ field }) => ( <FormItem><FormLabel>Location</FormLabel><FormControl><Input placeholder="e.g., Luanda, Angola" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem> )} />
                     </CardContent>
                 </Card>
                 <Card>
