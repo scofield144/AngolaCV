@@ -1,0 +1,48 @@
+
+[
+  {
+    "id": 1,
+    "title": "Senior Frontend Engineer",
+    "company": "Tech Innovate Angola",
+    "location": "Luanda, Angola",
+    "type": "Full-time",
+    "tags": ["React", "TypeScript", "Next.js", "Tailwind CSS"],
+    "postedDate": "2024-07-20"
+  },
+  {
+    "id": 2,
+    "title": "Data Analyst",
+    "company": "Angola Analytics Group",
+    "location": "Remote",
+    "type": "Contract",
+    "tags": ["SQL", "Python", "Power BI", "Data Visualization"],
+    "postedDate": "2024-07-19"
+  },
+  {
+    "id": 3,
+    "title": "Project Manager",
+    "company": "BuildRight Construtora",
+    "location": "Benguela, Angola",
+    "type": "Full-time",
+    "tags": ["Project Management", "Construction", "Agile", "Budgeting"],
+    "postedDate": "2024-07-18"
+  },
+  {
+    "id": 4,
+    "title": "Marketing Digital Specialist",
+    "company": "Mercado Nacional Online",
+    "location": "Luanda, Angola",
+    "type": "Part-time",
+    "tags": ["SEO", "Social Media", "Google Ads", "Content Marketing"],
+    "postedDate": "2024-07-17"
+  },
+    {
+    "id": 5,
+    "title": "HR Generalist",
+    "company": "Recursos Pro Angola",
+    "location": "Luanda, Angola",
+    "type": "Full-time",
+    "tags": ["Human Resources", "Recruitment", "Employee Relations", "SAP"],
+    "postedDate": "2024-07-16"
+  }
+]

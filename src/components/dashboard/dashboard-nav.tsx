@@ -11,6 +11,7 @@ import {
   Send,
   Settings,
   Star,
+  Briefcase,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -29,6 +30,7 @@ import { Logo } from "@/components/logo";
 
 const mainNav = [
   { href: "/dashboard", icon: Home, label: "Dashboard" },
+  { href: "/dashboard/job-board", icon: Briefcase, label: "Job Board" },
   { href: "/dashboard/my-library", icon: Library, label: "My Library" },
   { href: "/dashboard/my-skills", icon: Star, label: "My Skills" },
   { href: "/dashboard/my-interests", icon: Heart, label: "My Interests" },
