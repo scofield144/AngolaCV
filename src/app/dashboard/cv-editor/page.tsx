@@ -1,4 +1,5 @@
 
+
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,8 +8,7 @@ import * as z from "zod";
 import { useState } from "react";
 import { doc } from 'firebase/firestore';
 
-import { useUser, useFirestore } from "@/firebase";
-import { setDocumentNonBlocking } from "@/firebase/non-blocking-updates";
+import { useUser, useFirestore, setDocumentNonBlocking } from "@/firebase";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -203,7 +203,7 @@ export default function MyProfilePage() {
                     <CardContent className="grid gap-6 md:grid-cols-2">
                         <FormField name="linkedin" control={form.control} render={({ field }) => ( <FormItem><FormLabel>LinkedIn Profile</FormLabel><FormControl><Input placeholder="https://linkedin.com/in/..." {...field} /></FormControl><FormMessage /></FormItem> )} />
                         <FormField name="github" control={form.control} render={({ field }) => ( <FormItem><FormLabel>GitHub Profile</FormLabel><FormControl><Input placeholder="https://github.com/..." {...field} /></FormControl><FormMessage /></FormItem> )} />
-                        <FormField name="portfolio" control={form.control} render={({ field }) => ( <FormItem><FormLabel>Portfolio/Website</FormLabel><FormControl><Input placeholder="https://..." {...field} /></FormControl><FormMessage /></FormItem> )} />
+                        <FormField name="portfolio" control={form.control} render={({ field }) => ( <FormItem><FormLabel>Portfolio/Website</FormLabel><FormControl><Input placeholder="https://..." {...field} /></FormControl><FormMessage /></FormMessage /></FormItem> )} />
                     </CardContent>
                 </Card>
             </>
@@ -230,7 +230,7 @@ export default function MyProfilePage() {
               </div>
             </CardHeader>
             <CardContent className="space-y-6">
-              <FormField name="summary" control={form.control} render={({ field }) => ( <FormItem><FormLabel>Professional Summary</FormLabel><FormControl><Textarea placeholder="A brief summary of your professional background..." {...field} /></FormControl><FormMessage /></FormItem> )} />
+              <FormField name="summary" control={form.control} render={({ field }) => ( <FormItem><FormLabel>Professional Summary</FormLabel><FormControl><Textarea placeholder="A brief summary of your professional background..." {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem> )} />
               <Separator />
               <div className="space-y-4">
                 {experienceFields.map((field, index) => (
@@ -280,7 +280,7 @@ export default function MyProfilePage() {
             <Card>
                 <CardHeader><CardTitle>Skills</CardTitle><CardDescription>List your technical and soft skills.</CardDescription></CardHeader>
                 <CardContent>
-                    <FormField name="skills" control={form.control} render={({ field }) => ( <FormItem><FormControl><Textarea placeholder="List your professional skills, separated by commas or on new lines." className="min-h-24" {...field} /></FormControl><FormMessage /></FormItem> )} />
+                    <FormField name="skills" control={form.control} render={({ field }) => ( <FormItem><FormControl><Textarea placeholder="List your professional skills, separated by commas or on new lines." className="min-h-24" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem> )} />
                 </CardContent>
             </Card>
         )}
@@ -289,7 +289,7 @@ export default function MyProfilePage() {
             <Card>
                 <CardHeader><CardTitle>Language Skills</CardTitle><CardDescription>List the languages you speak and your proficiency level.</CardDescription></CardHeader>
                 <CardContent>
-                    <FormField name="languages" control={form.control} render={({ field }) => ( <FormItem><FormControl><Textarea placeholder="e.g., Portuguese (Native), English (Fluent)" className="min-h-24" {...field} /></FormControl><FormMessage /></FormItem> )} />
+                    <FormField name="languages" control={form.control} render={({ field }) => ( <FormItem><FormControl><Textarea placeholder="e.g., Portuguese (Native), English (Fluent)" className="min-h-24" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem> )} />
                 </CardContent>
             </Card>
         )}
