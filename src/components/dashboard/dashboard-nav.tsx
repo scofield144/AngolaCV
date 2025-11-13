@@ -42,6 +42,7 @@ const featuresNav = [
   { href: "/dashboard/cv-editor", icon: PlusCircle, label: "Create CV" },
   { href: "/dashboard/cover-letters", icon: FileText, label: "Create Cover Letter" },
   { href: "/dashboard/ats-checker", icon: CheckCircle, label: "ATS Checker" },
+  { href: "/dashboard/job-board", icon: Briefcase, label: "Job Board" },
 ];
 
 export function DashboardNav() {

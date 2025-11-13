@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Check, Building2, ArrowRight, BarChart, PenSquare, Share2 } from "lucide-react";
+import { Check, Building2, ArrowRight, BarChart, PenSquare, Share2, Search, MessageSquare, Users } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 
@@ -20,6 +20,24 @@ const features = [
     title: "Shareable Public Profile",
     description: "Create a shareable link to your professional profile and track who views it.",
   }
+];
+
+const recruiterFeatures = [
+    {
+        icon: <Search />,
+        title: "Advanced Candidate Search",
+        description: "Find the perfect talent with powerful filters for skills, experience, location, and more.",
+    },
+    {
+        icon: <Users />,
+        title: "Access to a Diverse Talent Pool",
+        description: "Tap into a growing database of qualified professionals in Angola looking for their next opportunity.",
+    },
+    {
+        icon: <MessageSquare />,
+        title: "Direct Candidate Messaging",
+        description: "Connect with promising candidates directly through our integrated and simple chat feature.",
+    }
 ];
 
 export default function LandingPage() {
@@ -95,7 +113,41 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section id="pricing" className="py-12 md:py-24 lg:py-32">
+        <section id="for-recruiters" className="py-12 md:py-24 lg:py-32">
+            <div className="container mx-auto px-4 md:px-6">
+                <div className="mx-auto max-w-3xl text-center">
+                    <Badge variant="secondary" className="mb-4">For Recruiters</Badge>
+                    <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">
+                        Find Your Next Great Hire
+                    </h2>
+                    <p className="mt-4 text-lg text-muted-foreground">
+                        Access a curated talent pool and streamline your hiring process with our powerful recruitment tools.
+                    </p>
+                </div>
+                <div className="mt-12 grid gap-8 md:grid-cols-3">
+                    {recruiterFeatures.map((feature, index) => (
+                        <Card key={index} className="bg-secondary/50">
+                            <CardHeader className="flex flex-row items-center gap-4">
+                                <div className="grid h-12 w-12 place-items-center rounded-full bg-primary/10 text-primary">
+                                    {feature.icon}
+                                </div>
+                                <CardTitle>{feature.title}</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-muted-foreground">{feature.description}</p>
+                            </CardContent>
+                        </Card>
+                    ))}
+                </div>
+                 <div className="mt-12 text-center">
+                    <Button size="lg" asChild>
+                        <Link href="/login">Request a Demo</Link>
+                    </Button>
+                </div>
+            </div>
+        </section>
+
+        <section id="pricing" className="bg-muted py-12 md:py-24 lg:py-32">
           <div className="container mx-auto px-4 md:px-6">
             <div className="mx-auto max-w-3xl text-center">
                <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">
