@@ -62,17 +62,19 @@ const defaultValues: Partial<ProfileFormValues> = {
   jobTitle: "Software Engineer",
   location: "Luanda, Angola",
   email: "john.doe@example.com",
-  summary: "A highly motivated Software Engineer with 5+ years of experience in developing and deploying scalable web applications. Proficient in modern JavaScript frameworks and cloud technologies. Passionate about building solutions for the Angolan market.",
-  skills: "React, Node.js, PostgreSQL, DevOps, TypeScript, English, Portuguese",
+  phone: '',
   linkedin: "https://linkedin.com/in/johndoe",
   github: "https://github.com/johndoe",
+  portfolio: '',
+  summary: "A highly motivated Software Engineer with 5+ years of experience in developing and deploying scalable web applications. Proficient in modern JavaScript frameworks and cloud technologies. Passionate about building solutions for the Angolan market.",
+  skills: "React, Node.js, PostgreSQL, DevOps, TypeScript, English, Portuguese",
+  languages: "- Portuguese (Native)\n- English (Fluent)",
   experiences: [
     { jobTitle: "Senior Developer", company: "Tech Solutions LDA", location: "Luanda", startDate: "2020-01-01", endDate: "Present", description: "- Led the development of a new e-commerce platform, resulting in a 30% increase in sales.\n- Mentored junior developers and conducted code reviews."}
   ],
   educations: [
       { degree: "Bachelor of Science in Computer Science", institution: "Universidade Agostinho Neto", startDate: "2015-09-01", endDate: "2019-07-01" }
   ],
-  languages: "- Portuguese (Native)\n- English (Fluent)",
 };
 
 const steps = [
@@ -207,13 +209,13 @@ export default function MyProfilePage() {
                         <div className="grid grid-cols-2 gap-4">
                             <FormField name={`experiences.${index}.jobTitle`} control={form.control} render={({ field }) => ( <FormItem><FormLabel>Job Title</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )} />
                             <FormField name={`experiences.${index}.company`} control={form.control} render={({ field }) => ( <FormItem><FormLabel>Company</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )} />
-                            <FormField name={`experiences.${index}.location`} control={form.control} render={({ field }) => ( <FormItem><FormLabel>Location</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )} />
+                            <FormField name={`experiences.${index}.location`} control={form.control} render={({ field }) => ( <FormItem><FormLabel>Location</FormLabel><FormControl><Input {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem> )} />
                         </div>
                          <div className="grid grid-cols-2 gap-4">
-                            <FormField name={`experiences.${index}.startDate`} control={form.control} render={({ field }) => ( <FormItem><FormLabel>Start Date</FormLabel><FormControl><Input type="date" {...field} /></FormControl><FormMessage /></FormItem> )} />
-                            <FormField name={`experiences.${index}.endDate`} control={form.control} render={({ field }) => ( <FormItem><FormLabel>End Date</FormLabel><FormControl><Input type="date" {...field} /></FormControl><FormMessage /></FormItem> )} />
+                            <FormField name={`experiences.${index}.startDate`} control={form.control} render={({ field }) => ( <FormItem><FormLabel>Start Date</FormLabel><FormControl><Input type="date" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem> )} />
+                            <FormField name={`experiences.${index}.endDate`} control={form.control} render={({ field }) => ( <FormItem><FormLabel>End Date</FormLabel><FormControl><Input type="date" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem> )} />
                         </div>
-                        <FormField name={`experiences.${index}.description`} control={form.control} render={({ field }) => ( <FormItem><FormLabel>Description</FormLabel><FormControl><Textarea className="min-h-32" {...field} /></FormControl><FormMessage /></FormItem> )} />
+                        <FormField name={`experiences.${index}.description`} control={form.control} render={({ field }) => ( <FormItem><FormLabel>Description</FormLabel><FormControl><Textarea className="min-h-32" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem> )} />
                     </div>
                 ))}
                 <Button type="button" variant="outline" onClick={() => appendExperience({ jobTitle: '', company: '', description: '' })}><PlusCircle className="mr-2"/> Add Experience</Button>
@@ -234,8 +236,8 @@ export default function MyProfilePage() {
                                 <FormField name={`educations.${index}.institution`} control={form.control} render={({ field }) => ( <FormItem><FormLabel>Institution</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem> )} />
                             </div>
                             <div className="grid grid-cols-2 gap-4">
-                                <FormField name={`educations.${index}.startDate`} control={form.control} render={({ field }) => ( <FormItem><FormLabel>Start Date</FormLabel><FormControl><Input type="date" {...field} /></FormControl><FormMessage /></FormItem> )} />
-                                <FormField name={`educations.${index}.endDate`} control={form.control} render={({ field }) => ( <FormItem><FormLabel>End Date</FormLabel><FormControl><Input type="date" {...field} /></FormControl><FormMessage /></FormItem> )} />
+                                <FormField name={`educations.${index}.startDate`} control={form.control} render={({ field }) => ( <FormItem><FormLabel>Start Date</FormLabel><FormControl><Input type="date" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem> )} />
+                                <FormField name={`educations.${index}.endDate`} control={form.control} render={({ field }) => ( <FormItem><FormLabel>End Date</FormLabel><FormControl><Input type="date" {...field} value={field.value ?? ''} /></FormControl><FormMessage /></FormItem> )} />
                             </div>
                         </div>
                     ))}
@@ -288,5 +290,3 @@ export default function MyProfilePage() {
     </Form>
   );
 }
-
-    
