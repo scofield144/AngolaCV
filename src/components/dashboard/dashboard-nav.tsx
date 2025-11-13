@@ -12,6 +12,7 @@ import {
   Star,
   PlusCircle,
   Share2,
+  Briefcase,
 } from "lucide-react";
 
 import {
@@ -34,6 +35,7 @@ const mainNav = [
   { href: "/dashboard/my-skills", icon: Star, label: "My Skills" },
   { href: "/dashboard/my-interests", icon: Heart, label: "My Interests" },
   { href: "/dashboard/my-applications", icon: Send, label: "My Applications" },
+  { href: "/dashboard/job-board", icon: Briefcase, label: "Job Board" },
 ];
 
 const featuresNav = [
@@ -55,7 +57,7 @@ export function DashboardNav() {
           <SidebarMenu>
             {mainNav.map((item) => (
               <SidebarMenuItem key={item.href}>
-                <Link href={item.href} legacyBehavior passHref>
+                <Link href={item.href}>
                   <SidebarMenuButton
                     isActive={pathname === item.href}
                     tooltip={item.label}
@@ -73,7 +75,7 @@ export function DashboardNav() {
           <SidebarMenu>
             {featuresNav.map((item) => (
               <SidebarMenuItem key={item.href}>
-                <Link href={item.href} legacyBehavior passHref>
+                <Link href={item.href}>
                   <SidebarMenuButton
                     isActive={pathname === item.href}
                     tooltip={item.label}
@@ -98,7 +100,7 @@ export function DashboardNav() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <Link href="/dashboard/settings" legacyBehavior passHref>
+            <Link href="/dashboard/settings">
               <SidebarMenuButton 
                 isActive={pathname === "/dashboard/settings"}
                 tooltip="Settings"

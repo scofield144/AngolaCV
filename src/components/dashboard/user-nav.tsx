@@ -36,18 +36,18 @@ export function UserNav() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem asChild>
             <Link href="/dashboard/cv-editor">
-              <User className="mr-2" />
-              <span>Profile</span>
+              <DropdownMenuItem>
+                <User className="mr-2" />
+                <span>Profile</span>
+              </DropdownMenuItem>
             </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
             <Link href="/dashboard/settings">
-              <Settings className="mr-2" />
-              <span>Settings</span>
+              <DropdownMenuItem>
+                <Settings className="mr-2" />
+                <span>Settings</span>
+              </DropdownMenuItem>
             </Link>
-          </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
