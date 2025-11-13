@@ -1,7 +1,7 @@
 
 'use server';
 
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { collection, serverTimestamp } from 'firebase/firestore';
 import { initializeFirebase } from '@/firebase';
 import { addDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 
@@ -19,7 +19,9 @@ export async function saveCoverLetter(
     const { firestore } = initializeFirebase();
     const coverLettersRef = collection(firestore, 'users', userId, 'coverLetters');
 
-    await addDocumentNonBlocking(coverLettersRef, {
+    // Use the non-blocking function. It returns a promise but we don't await it here.
+    // Error handling is done inside addDocumentNonBlocking via the error emitter.
+    addDocumentNonBlocking(coverLettersRef, {
       title,
       content,
       lastUpdated: serverTimestamp(),
@@ -28,6 +30,8 @@ export async function saveCoverLetter(
     return { success: true };
   } catch (error) {
     console.error('Error saving cover letter:', error);
+    // This top-level catch is for synchronous errors during initialization.
+    // Firestore permission errors will be handled by the non-blocking function.
     throw new Error('Failed to save cover letter. Please try again.');
   }
 }
