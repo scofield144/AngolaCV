@@ -1,3 +1,4 @@
+
 'use server';
 
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
@@ -20,7 +21,6 @@ export async function saveCoverLetter(
     await addDoc(coverLettersRef, {
       title,
       content,
-      creationDate: serverTimestamp(),
       lastUpdated: serverTimestamp(),
     });
 
