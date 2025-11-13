@@ -11,6 +11,7 @@ import {
   Send,
   Settings,
   Star,
+  PlusCircle,
   Briefcase,
 } from "lucide-react";
 
@@ -29,8 +30,7 @@ import {
 import { Logo } from "@/components/logo";
 
 const mainNav = [
-  { href: "/dashboard", icon: Home, label: "Dashboard" },
-  { href: "/dashboard/job-board", icon: Briefcase, label: "Job Board" },
+  { href: "/dashboard", icon: Home, label: "My Europass" },
   { href: "/dashboard/my-library", icon: Library, label: "My Library" },
   { href: "/dashboard/my-skills", icon: Star, label: "My Skills" },
   { href: "/dashboard/my-interests", icon: Heart, label: "My Interests" },
@@ -38,9 +38,10 @@ const mainNav = [
 ];
 
 const featuresNav = [
-  { href: "/dashboard/cv-editor", icon: FileText, label: "CV Editor" },
-  { href: "/dashboard/cover-letters", icon: FileText, label: "Cover Letters" },
+  { href: "/dashboard/cv-editor", icon: PlusCircle, label: "Create CV" },
+  { href: "/dashboard/cover-letters", icon: FileText, label: "Create Cover Letter" },
   { href: "/dashboard/ats-checker", icon: Lightbulb, label: "ATS Checker" },
+  { href: "/dashboard/job-board", icon: Briefcase, label: "Job Board" },
 ];
 
 export function DashboardNav() {
