@@ -41,17 +41,16 @@ const personalNav = [
 ];
 
 const personalFeatures = [
-  { href: "/dashboard/cv-editor", icon: PlusCircle, label: "Create CV" },
-  { href: "/dashboard/cover-letters", icon: FileText, label: "Create Cover Letter" },
+  { href: "/dashboard/cv-editor", icon: PlusCircle, label: "CV Editor" },
+  { href: "/dashboard/cover-letters", icon: FileText, label: "Cover Letter Builder" },
   { href: "/dashboard/ats-checker", icon: CheckCircle, label: "ATS Checker" },
   { href: "/dashboard/job-board", icon: Briefcase, label: "Job Board" },
 ];
 
 const recruiterNav = [
-    { href: "/dashboard", icon: Home, label: "Dashboard" },
     { href: "/dashboard/candidate-search", icon: Search, label: "Candidate Search" },
     { href: "/dashboard/company-profile", icon: Building, label: "Company Profile" },
-    { href: "/dashboard/job-board", icon: Briefcase, label: "Job Board" },
+    { href: "/dashboard/job-board", icon: Briefcase, label: "Job Postings" },
 ];
 
 export function DashboardNav() {
