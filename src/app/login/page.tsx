@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState } from 'react';
@@ -23,9 +24,21 @@ export default function LoginPage() {
   const { user, isUserLoading } = useUser();
   const { toast } = useToast();
 
-  const [email, setEmail] = useState('test@loneus.com');
-  const [password, setPassword] = useState('password');
+  const [activeTab, setActiveTab] = useState("personal");
+  const [email, setEmail] = useState('user@loneus.com');
+  const [password, setPassword] = useState('user');
   const [isAuthActionLoading, setIsAuthActionLoading] = useState(false);
+
+  useEffect(() => {
+    if (activeTab === "personal") {
+      setEmail("user@loneus.com");
+      setPassword("user");
+    } else {
+      setEmail("recruiter@loneus.com");
+      setPassword("recruiter");
+    }
+  }, [activeTab]);
+
 
   useEffect(() => {
     if (!isUserLoading && user) {
@@ -172,7 +185,7 @@ export default function LoginPage() {
           <CardDescription>Select your account type to continue.</CardDescription>
         </CardHeader>
         <CardContent>
-            <Tabs defaultValue="personal">
+            <Tabs defaultValue="personal" onValueChange={setActiveTab}>
                 <TabsList className="grid w-full grid-cols-2">
                     <TabsTrigger value="personal"><User className="mr-2"/>Personal</TabsTrigger>
                     <TabsTrigger value="company"><Briefcase className="mr-2"/>Recruiter</TabsTrigger>
