@@ -93,7 +93,7 @@ function PersonalDashboard() {
 
 function RecruiterDashboard() {
     return (
-        <div className="flex flex-col items-center justify-center h-full">
+        <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed bg-card p-12 text-center h-full">
              <PlaceholderPage 
                 title="Welcome, Recruiter!"
                 description="This is your dashboard. Start by searching for candidates or setting up your company profile."

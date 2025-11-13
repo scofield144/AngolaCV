@@ -4,7 +4,7 @@ export default function CandidateSearchPage() {
   return (
     <PlaceholderPage 
       title="Candidate Search"
-      description="Find the perfect candidates using advanced search and filtering options."
+      description="Find the perfect candidates using advanced search and filtering for skills, location, and experience."
     />
   );
 }

@@ -4,7 +4,7 @@ export default function MySkillsPage() {
   return (
     <PlaceholderPage 
       title="My Skills"
-      description="A dedicated space to manage, validate, and showcase your professional skills. This feature is exclusive to Personal accounts."
+      description="A dedicated space to manage, validate, and showcase your professional skills."
     />
   );
 }
