@@ -1,28 +1,7 @@
 'use server';
 
-import {
-  generateCoverLetter,
-  type GenerateCoverLetterInput,
-  type GenerateCoverLetterOutput,
-} from '@/ai/flows/generate-cover-letter';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { getSdks } from '@/firebase';
-
-export async function getAiCoverLetter(
-  input: GenerateCoverLetterInput
-): Promise<GenerateCoverLetterOutput> {
-  if (!input.jobTitle || !input.companyName) {
-    throw new Error('Job title and company name are required.');
-  }
-
-  try {
-    const result = await generateCoverLetter(input);
-    return result;
-  } catch (error) {
-    console.error('Error generating cover letter:', error);
-    throw new Error('Failed to get AI suggestion. Please try again.');
-  }
-}
 
 export async function saveCoverLetter(
   userId: string,
