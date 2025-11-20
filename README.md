@@ -1,7 +1,6 @@
-
 # Loneus - The Modern CV Platform for Angola
 
-Loneus is a comprehensive web application designed to bridge the gap between job seekers and recruiters in the Angolan job market. It provides a suite of powerful tools for creating professional CVs, and connecting with potential employers.
+Loneus is a comprehensive web application designed to bridge the gap between job seekers and recruiters in the Angolan job market. It provides a suite of powerful tools for creating professional CVs, managing job applications, and connecting with potential employers.
 
 ## Key Features
 
@@ -10,7 +9,7 @@ The platform is divided into two main account types, each with a tailored set of
 ### For Job Seekers (Personal Accounts)
 
 - **CV Editor**: A guided, 5-step form to build a comprehensive professional profile. Users can input personal data, professional experience, education, skills, and languages.
-- **My Library**: A central dashboard to manage, edit, and delete all created CVs and cover letters. Documents are stored securely in Firestore and can be accessed for future edits or downloads.
+- **My Library**: A central dashboard to manage, edit, and delete all created CVs and cover letters.
 - **Job Board**: Users can browse and search for job opportunities posted on the platform.
 - **Application Tracking**: A dedicated page to keep track of the status of all job applications in one place (e.g., Applied, Under Review, Interviewing).
 - **Cover Letter Builder**: A simple yet effective editor to create, write, and save custom cover letters for job applications.
@@ -20,7 +19,7 @@ The platform is divided into two main account types, each with a tailored set of
 
 - **Advanced Candidate Search**: A powerful search interface with filters for keywords, skills, location (Angolan provinces), and industry to find the best talent.
 - **Company Profile Management**: A section for recruiters to create and manage their public-facing company profile, including logo, company details, and social links to attract candidates.
-- **Job Postings Management**: A dedicated section to view and manage job listings. (Note: Job creation UI is a future feature).
+- **Job Postings Management**: A dedicated section to view and manage job listings. (Note: Job creation UI is not yet implemented).
 
 ## Tech Stack
 
