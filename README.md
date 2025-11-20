@@ -3,59 +3,62 @@
 
 Loneus is a comprehensive web application designed to bridge the gap between job seekers and recruiters in the Angolan job market. It provides a suite of powerful tools for creating professional CVs, optimizing them for Applicant Tracking Systems (ATS), and connecting with potential employers.
 
+## Key Features
+
+The platform is divided into two main account types, each with a tailored set of features.
+
+### For Job Seekers (Personal Accounts)
+
+- **AI-Powered CV Editor**: A guided, 5-step form to build a comprehensive professional profile. Users can input personal data, professional experience, education, skills, and languages. An "AI Assist" feature is available to generate content suggestions for job descriptions based on the user's job title and Angolan market trends.
+- **My Library**: A central dashboard to manage, edit, and delete all created CVs and cover letters. Documents are stored securely in Firestore and can be accessed for future edits or downloads.
+- **ATS Compatibility Checker**: An AI-driven tool that analyzes CV content pasted by the user. It provides a compatibility score (0-100) and actionable feedback to improve the CV's chances of passing through automated screening systems.
+- **Job Board**: Users can browse and search for job opportunities posted on the platform.
+- **Application Tracking**: A dedicated page to keep track of the status of all job applications in one place (e.g., Applied, Under Review, Interviewing).
+- **Cover Letter Builder**: A simple yet effective editor to create, write, and save custom cover letters for job applications.
+- **Settings**: Manage account preferences, including the option to make the user's profile visible and searchable by recruiters.
+
+### For Recruiters (Company Accounts)
+
+- **Advanced Candidate Search**: A powerful search interface with filters for keywords, skills, location (Angolan provinces), and industry to find the best talent.
+- **Company Profile Management**: A section for recruiters to create and manage their public-facing company profile, including logo, company details, and social links to attract candidates.
+- **Job Postings Management**: A dedicated section to view and manage job listings. (Note: Job creation UI is a future feature).
+
 ## Tech Stack
 
 This project is built with a modern, robust, and scalable technology stack:
 
-- **Framework**: [Next.js](https://nextjs.org/) (App Router)
+- **Framework**: [Next.js](https://nextjs.org/) (using the App Router)
 - **Language**: [TypeScript](https://www.typescriptlang.org/)
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/)
 - **UI Components**: [ShadCN UI](https://ui.shadcn.com/)
-- **Backend & Auth**: [Firebase](https://firebase.google.com/) (Authentication, Firestore)
-- **Generative AI**: [Genkit](https://firebase.google.com/docs/genkit) (for AI-powered features)
-- **Forms**: [React Hook Form](https://react-hook-form.com/) with [Zod](https://zod.dev/) for validation
+- **Backend & Authentication**: [Firebase](https://firebase.google.com/) (Firestore for database, Firebase Authentication for user management)
+- **Generative AI**: [Genkit](https://firebase.google.com/docs/genkit) (for AI-powered features like CV content generation and ATS scoring)
+- **Forms**: [React Hook Form](https://react-hook-form.com/) with [Zod](https://zod.dev/) for robust validation
 - **Icons**: [Lucide React](https://lucide.dev/)
-
-## Key Features
-
-### For Job Seekers (Personal Accounts)
-
-- **AI-Powered CV Editor**: A guided, 5-step form to build a comprehensive professional profile, with AI suggestions for content tailored to the Angolan market.
-- **My Library**: A central dashboard to manage, edit, and delete all created CVs and cover letters.
-- **ATS Compatibility Checker**: An AI-driven tool to analyze CV content and provide a score and actionable feedback to improve its chances of passing through automated screening systems.
-- **Job Board**: Browse and search for job opportunities posted on the platform.
-- **Application Tracking**: Keep track of the status of all your job applications in one place.
-- **Settings**: Manage account preferences, such as profile visibility to recruiters.
-
-### For Recruiters (Company Accounts)
-
-- **Advanced Candidate Search**: A powerful search interface with filters for keywords, skills, location, and industry to find the best talent.
-- **Company Profile**: Create and manage a public-facing company profile to attract candidates.
-- **Job Postings Management**: A dedicated section to create, view, and manage job listings.
 
 ## Project Structure
 
-The codebase is organized to be modular and maintainable.
+The codebase is organized into a modular and maintainable structure to facilitate development and scaling.
 
 ```
 /src
 ├── ai/                # Genkit flows and AI-related logic
-│   ├── flows/
-│   └── genkit.ts
+│   ├── flows/         # Individual AI tasks (e.g., ATS scoring, content generation)
+│   └── genkit.ts      # Genkit initialization and configuration
 ├── app/               # Next.js App Router pages and layouts
 │   ├── (auth)/        # Routes for authentication (login, signup)
-│   └── dashboard/     # Protected dashboard routes and pages
+│   └── dashboard/     # Protected dashboard routes for authenticated users
 ├── components/        # Reusable React components
-│   ├── dashboard/     # Components specific to the dashboard layout
-│   └── ui/            # ShadCN UI components
-├── firebase/          # Firebase configuration, hooks, and providers
+│   ├── dashboard/     # Components specific to the dashboard layout (e.g., nav, header)
+│   └── ui/            # Core UI components from ShadCN (Button, Card, etc.)
+├── firebase/          # Firebase configuration, providers, and custom hooks
 ├── hooks/             # Custom React hooks (e.g., useUserProfile)
-└── lib/               # Utility functions and type definitions
+└── lib/               # Utility functions and shared libraries
 ```
 
 ## Getting Started
 
-Follow these steps to get the project running on your local machine.
+Follow these steps to set up and run the project on your local machine.
 
 ### Prerequisites
 
@@ -71,25 +74,29 @@ cd <repository-directory>
 
 ### 2. Install Dependencies
 
+Install the required npm packages.
+
 ```bash
 npm install
 ```
 
 ### 3. Set Up Environment Variables
 
-The project uses Firebase for backend services. You will need to create a Firebase project and obtain your configuration credentials.
+The project uses Firebase for its backend. You will need to create a Firebase project and get your configuration credentials.
 
 1.  Go to the [Firebase Console](https://console.firebase.google.com/).
 2.  Create a new project.
-3.  Add a new Web App to your project.
-4.  Copy the `firebaseConfig` object.
-5.  Update the contents of `src/firebase/config.ts` with your project's configuration.
+3.  In your project, add a new Web App.
+4.  Firebase will provide a `firebaseConfig` object. Copy this object.
+5.  Update the contents of `src/firebase/config.ts` with your project's configuration. This file is already created in the project, you just need to paste your credentials.
 
-### 4. Run the Development Server
+### 4. Run the Development Servers
 
-The application consists of the Next.js frontend and the Genkit AI development server. Run them in separate terminals.
+The application consists of two main parts: the Next.js frontend and the Genkit AI development server. They must be run in separate terminals.
 
 **Terminal 1: Run the Next.js App**
+
+This command starts the main web application.
 
 ```bash
 npm run dev
@@ -99,8 +106,10 @@ The application will be available at [http://localhost:9002](http://localhost:90
 
 **Terminal 2: Run the Genkit AI Server**
 
+This command starts the Genkit development server, which handles all AI-related tasks.
+
 ```bash
 npm run genkit:watch
 ```
 
-This starts the Genkit development server, which makes the AI flows available for the Next.js application to call. The Genkit UI will be available at [http://localhost:4000](http://localhost:4000).
+This makes the AI flows available for the Next.js application to call. The Genkit development UI will be available at [http://localhost:4000](http://localhost:4000), where you can inspect and test your AI flows.
