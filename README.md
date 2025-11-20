@@ -1,7 +1,7 @@
 
 # Loneus - The Modern CV Platform for Angola
 
-Loneus is a comprehensive web application designed to bridge the gap between job seekers and recruiters in the Angolan job market. It provides a suite of powerful tools for creating professional CVs, optimizing them for Applicant Tracking Systems (ATS), and connecting with potential employers.
+Loneus is a comprehensive web application designed to bridge the gap between job seekers and recruiters in the Angolan job market. It provides a suite of powerful tools for creating professional CVs, and connecting with potential employers.
 
 ## Key Features
 
@@ -9,9 +9,8 @@ The platform is divided into two main account types, each with a tailored set of
 
 ### For Job Seekers (Personal Accounts)
 
-- **AI-Powered CV Editor**: A guided, 5-step form to build a comprehensive professional profile. Users can input personal data, professional experience, education, skills, and languages. An "AI Assist" feature is available to generate content suggestions for job descriptions based on the user's job title and Angolan market trends.
+- **CV Editor**: A guided, 5-step form to build a comprehensive professional profile. Users can input personal data, professional experience, education, skills, and languages.
 - **My Library**: A central dashboard to manage, edit, and delete all created CVs and cover letters. Documents are stored securely in Firestore and can be accessed for future edits or downloads.
-- **ATS Compatibility Checker**: An AI-driven tool that analyzes CV content pasted by the user. It provides a compatibility score (0-100) and actionable feedback to improve the CV's chances of passing through automated screening systems.
 - **Job Board**: Users can browse and search for job opportunities posted on the platform.
 - **Application Tracking**: A dedicated page to keep track of the status of all job applications in one place (e.g., Applied, Under Review, Interviewing).
 - **Cover Letter Builder**: A simple yet effective editor to create, write, and save custom cover letters for job applications.
@@ -32,7 +31,6 @@ This project is built with a modern, robust, and scalable technology stack:
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/)
 - **UI Components**: [ShadCN UI](https://ui.shadcn.com/)
 - **Backend & Authentication**: [Firebase](https://firebase.google.com/) (Firestore for database, Firebase Authentication for user management)
-- **Generative AI**: [Genkit](https://firebase.google.com/docs/genkit) (for AI-powered features like CV content generation and ATS scoring)
 - **Forms**: [React Hook Form](https://react-hook-form.com/) with [Zod](https://zod.dev/) for robust validation
 - **Icons**: [Lucide React](https://lucide.dev/)
 
@@ -42,9 +40,6 @@ The codebase is organized into a modular and maintainable structure to facilitat
 
 ```
 /src
-├── ai/                # Genkit flows and AI-related logic
-│   ├── flows/         # Individual AI tasks (e.g., ATS scoring, content generation)
-│   └── genkit.ts      # Genkit initialization and configuration
 ├── app/               # Next.js App Router pages and layouts
 │   ├── (auth)/        # Routes for authentication (login, signup)
 │   └── dashboard/     # Protected dashboard routes for authenticated users
@@ -90,11 +85,7 @@ The project uses Firebase for its backend. You will need to create a Firebase pr
 4.  Firebase will provide a `firebaseConfig` object. Copy this object.
 5.  Update the contents of `src/firebase/config.ts` with your project's configuration. This file is already created in the project, you just need to paste your credentials.
 
-### 4. Run the Development Servers
-
-The application consists of two main parts: the Next.js frontend and the Genkit AI development server. They must be run in separate terminals.
-
-**Terminal 1: Run the Next.js App**
+### 4. Run the Development Server
 
 This command starts the main web application.
 
@@ -103,13 +94,3 @@ npm run dev
 ```
 
 The application will be available at [http://localhost:9002](http://localhost:9002).
-
-**Terminal 2: Run the Genkit AI Server**
-
-This command starts the Genkit development server, which handles all AI-related tasks.
-
-```bash
-npm run genkit:watch
-```
-
-This makes the AI flows available for the Next.js application to call. The Genkit development UI will be available at [http://localhost:4000](http://localhost:4000), where you can inspect and test your AI flows.
