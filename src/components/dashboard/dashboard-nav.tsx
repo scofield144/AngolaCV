@@ -10,10 +10,8 @@ import {
   PlusCircle,
   Share2,
   Briefcase,
-  CheckCircle,
   Search,
   Building,
-  Users,
 } from "lucide-react";
 
 import {
@@ -35,8 +33,6 @@ import { Skeleton } from "../ui/skeleton";
 const personalNav = [
   { href: "/dashboard", icon: Home, label: "My Europass" },
   { href: "/dashboard/my-library", icon: Library, label: "My Library" },
-  { href: "/dashboard/my-skills", icon: CheckCircle, label: "My Skills" },
-  { href: "/dashboard/my-interests", icon: Users, label: "My Interests"},
   { href: "/dashboard/my-applications", icon: Briefcase, label: "My Applications" },
 ];
 
