@@ -22,7 +22,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
 import { Save, ArrowRight, ArrowLeft, PlusCircle, Trash2 } from "lucide-react";
-import { AiSuggestionDialog } from "./_components/ai-suggestion-dialog";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 
@@ -110,7 +109,7 @@ export default function MyProfilePage() {
   });
 
 
-  const { trigger, getValues } = form;
+  const { trigger } = form;
 
   async function handleNext() {
     const fields = steps[currentStep - 1].fields;
@@ -216,16 +215,6 @@ export default function MyProfilePage() {
                       <CardTitle>Professional Experience</CardTitle>
                       <CardDescription>Your professional summary and work history.</CardDescription>
                   </div>
-                  <AiSuggestionDialog
-                    currentJobTitle={form.watch('jobTitle')}
-                    onSuggestionSelect={(suggestion) => {
-                      const currentExperience = getValues('experiences');
-                      if (currentExperience.length > 0) {
-                        form.setValue(`experiences.${currentExperience.length - 1}.description`, suggestion, { shouldValidate: true });
-                      }
-                      toast({ title: "Content updated with AI suggestion." });
-                    }}
-                  />
               </div>
             </CardHeader>
             <CardContent className="space-y-6">
